@@ -1,15 +1,42 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo, type JSX } from "react";
 
-const buildKeyframes = (from, steps) => {
-  const keys = new Set([
+type AnimationSnapshot = {
+  filter?: string;
+  opacity?: number;
+  y?: number;
+};
+
+type BlurTextProps = {
+  text?: string;
+  delay?: number;
+  className?: string;
+  animateBy?: "words" | "chars";
+  direction?: "top" | "bottom";
+  threshold?: number;
+  rootMargin?: string;
+  animationFrom?: AnimationSnapshot;
+  animationTo?: AnimationSnapshot[];
+  easing?: (t: number) => number;
+  onAnimationComplete?: () => void;
+  stepDuration?: number;
+};
+
+const buildKeyframes = (
+  from: AnimationSnapshot,
+  steps: AnimationSnapshot[]
+): { [key: string]: (string | number | undefined)[] } => {
+  const keys = new Set<string>([
     ...Object.keys(from),
     ...steps.flatMap((s) => Object.keys(s)),
   ]);
 
-  const keyframes = {};
+  const keyframes: { [key: string]: (string | number | undefined)[] } = {};
   keys.forEach((k) => {
-    keyframes[k] = [from[k], ...steps.map((s) => s[k])];
+    keyframes[k] = [
+      from[k as keyof AnimationSnapshot],
+      ...steps.map((s) => s[k as keyof AnimationSnapshot]),
+    ];
   });
   return keyframes;
 };
@@ -24,13 +51,13 @@ const BlurText = ({
   rootMargin = "0px",
   animationFrom,
   animationTo,
-  easing = (t) => t,
+  easing = (t: number) => t,
   onAnimationComplete,
   stepDuration = 0.35,
-}) => {
+}: BlurTextProps): JSX.Element => {
   const elements = animateBy === "words" ? text.split(" ") : text.split("");
-  const [inView, setInView] = useState(false);
-  const ref = useRef(null);
+  const [inView, setInView] = useState<boolean>(false);
+  const ref = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -38,17 +65,16 @@ const BlurText = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           setInView(true);
-          observer.unobserve(ref.current);
+          if (ref.current) observer.unobserve(ref.current);
         }
       },
       { threshold, rootMargin }
     );
     observer.observe(ref.current);
     return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threshold, rootMargin]);
 
-  const defaultFrom = useMemo(
+  const defaultFrom: AnimationSnapshot = useMemo(
     () =>
       direction === "top"
         ? { filter: "blur(10px)", opacity: 0, y: -50 }
@@ -56,7 +82,7 @@ const BlurText = ({
     [direction]
   );
 
-  const defaultTo = useMemo(
+  const defaultTo: AnimationSnapshot[] = useMemo(
     () => [
       {
         filter: "blur(5px)",
@@ -90,14 +116,15 @@ const BlurText = ({
           duration: totalDuration,
           times,
           delay: (index * delay) / 1000,
+          ease: easing,
         };
-        spanTransition.ease = easing;
 
         return (
           <motion.span
             className="inline-block will-change-[transform,filter,opacity]"
             key={index}
             initial={fromSnapshot}
+            // @ts-expect-error ...
             animate={inView ? animateKeyframes : fromSnapshot}
             transition={spanTransition}
             onAnimationComplete={
