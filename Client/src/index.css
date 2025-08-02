@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+html {
+  scroll-behavior: smooth;
+}
+
 .comic-neue-light {
   font-family: "Comic Neue", cursive;
   font-weight: 300;

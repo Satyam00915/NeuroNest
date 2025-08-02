@@ -1,11 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { Menu, X } from "lucide-react";
 import { ModeToggle } from "./ui/mode-toggle";
 import { useTheme } from "./theme-provider";
+import BlurText from "./ui/BlurText";
+import { RiNotionFill } from "react-icons/ri";
+import { SiEvernote, SiObsidian } from "react-icons/si";
+import { FaDropbox, FaGoogleDrive, FaSlack, FaTrello } from "react-icons/fa";
+import { SvgComp } from "./ui/SvgComp";
+import { motion } from "framer-motion";
 
 export function HeroSection() {
   return (
@@ -15,539 +21,36 @@ export function HeroSection() {
         <section>
           <div className="pb-24 pt-12 md:pb-32 lg:pb-56 lg:pt-32">
             <div className="relative mx-auto flex items-center max-w-6xl px-2 flex-col lg:flex-row">
-              <div className="mx-auto max-w-lg text-center lg:ml-0 lg:w-1/2 lg:text-left">
-                <h1 className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16 xl:text-7xl">
-                  Ship 10x Faster with NS
-                </h1>
+              <div className="mx-auto max-w-lg text-center lg:ml-0 lg:w-1/2 lg:text-left pt-10">
+                <BlurText
+                  text="Because Your Brain Deserves a Backup."
+                  delay={150}
+                  animateBy="words"
+                  direction="top"
+                  onAnimationComplete={() => {
+                    return;
+                  }}
+                  className="text-5xl mb-8"
+                />
                 <p className="mt-8 max-w-2xl text-pretty text-lg">
-                  Highly customizable components for building modern websites
-                  and applications that look and feel the way you mean it.
+                  NeuroNest is your intelligent memory vault — capture thoughts,
+                  save media, jot notes, set reminders, and share seamlessly.
                 </p>
-
                 <div className="mt-12 flex flex-col items-center justify-center gap-2 sm:flex-row lg:justify-start">
                   <Button asChild size="lg" className="px-5 text-base">
                     <Link to="#link">
-                      <span className="text-nowrap">Start Building</span>
-                    </Link>
-                  </Button>
-                  <Button
-                    key={2}
-                    asChild
-                    size="lg"
-                    variant="ghost"
-                    className="px-5 text-base"
-                  >
-                    <Link to="#link">
-                      <span className="text-nowrap">Request a demo</span>
+                      <span className="text-nowrap">Get Started</span>
                     </Link>
                   </Button>
                 </div>
               </div>
-              {/* <img
-                className="pointer-events-none order-first ml-auto h-56 w-full object-cover invert sm:h-96 lg:absolute lg:inset-0 lg:-right-20 lg:-top-96 lg:order-last lg:h-max lg:w-2/3 lg:object-contain dark:mix-blend-lighten dark:invert-0"
-                src="https://ik.imagekit.io/lrigu76hy/tailark/abstract-bg.jpg?updatedAt=1745733473768"
-                alt="Abstract Object"
-                height="4000"
-                width="3000"
-              /> */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="500"
-                height="500"
-                viewBox="0 0 799.031 618.112"
-                role="img"
-                className="px-24 lg:px-0"
+              <motion.div
+                initial={{ x: 200, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
               >
-                <g transform="translate(-560.484 -230.944)">
-                  <path
-                    d="M15.18,488.763c0,.872.478,1.573,1.073,1.573h535.1c.6,0,1.073-.7,1.073-1.573s-.478-1.573-1.073-1.573H16.253C15.658,487.191,15.18,487.891,15.18,488.763Z"
-                    transform="translate(675.195 358.72)"
-                    fill="#ccc"
-                  />
-                  <rect
-                    width="19.105"
-                    height="3.371"
-                    transform="translate(865.646 842.298)"
-                    fill="#b6b3c5"
-                  />
-                  <rect
-                    width="19.105"
-                    height="3.371"
-                    transform="translate(1034.779 842.861)"
-                    fill="#b6b3c5"
-                  />
-                  <path
-                    d="M352.955,370.945a27.529,27.529,0,0,1-54.321,0H229.146V521.536h193.3V370.945Z"
-                    transform="translate(634.205 321.322)"
-                    fill="#d6d6e3"
-                  />
-                  <rect
-                    width="193.296"
-                    height="5.242"
-                    transform="translate(863.914 830.927)"
-                    fill="#090814"
-                  />
-                  <path
-                    d="M788.255,487.17H10.776A10.788,10.788,0,0,1,0,476.394V32.688A10.788,10.788,0,0,1,10.776,21.911H788.255a10.789,10.789,0,0,1,10.776,10.776V476.394a10.789,10.789,0,0,1-10.776,10.776Z"
-                    transform="translate(560.484 209.033)"
-                    fill="#090814"
-                  />
-                  <rect
-                    width="760.822"
-                    height="429.297"
-                    transform="translate(578.588 248)"
-                    fill="#fff"
-                  />
-                  <g transform="translate(0 -41.857)">
-                    <g transform="translate(-588.477 33.946)">
-                      <path
-                        d="M35.524,67.628A24.524,24.524,0,0,1,11,43.1V36.524A24.524,24.524,0,0,1,35.524,12a1.492,1.492,0,1,1,0,2.983,21.54,21.54,0,0,0-21.54,21.54V43.1a21.54,21.54,0,1,0,43.081,0V31.259a1.492,1.492,0,1,1,2.983,0V43.1A24.524,24.524,0,0,1,35.524,67.628Z"
-                        transform="translate(1535.985 422.718)"
-                      />
-                      <path
-                        d="M28.524,67.628A24.524,24.524,0,0,1,4,43.1V31.259a1.492,1.492,0,1,1,2.983,0V43.1a21.54,21.54,0,1,0,43.081,0V36.524a21.54,21.54,0,0,0-21.54-21.54,1.492,1.492,0,0,1,0-2.983A24.524,24.524,0,0,1,53.047,36.524V43.1A24.524,24.524,0,0,1,28.524,67.628Z"
-                        transform="translate(1496.922 422.718)"
-                      />
-                      <path
-                        d="M58.556,46.441a1.492,1.492,0,0,1-1.492-1.492V26.524a21.54,21.54,0,1,0-43.081,0,1.492,1.492,0,1,1-2.983,0,24.524,24.524,0,1,1,49.047,0V44.949A1.492,1.492,0,0,1,58.556,46.441Z"
-                        transform="translate(1535.985 366.911)"
-                      />
-                      <path
-                        d="M51.556,93.821a1.492,1.492,0,0,1-1.492-1.492V26.524a21.54,21.54,0,1,0-43.081,0V44.949a1.492,1.492,0,0,1-2.983,0V26.524A24.524,24.524,0,0,1,45.864,9.183a24.363,24.363,0,0,1,7.183,17.341V92.329A1.492,1.492,0,0,1,51.556,93.821Z"
-                        transform="translate(1496.922 366.911)"
-                      />
-                      <g transform="translate(1570.017 382.073)">
-                        <path
-                          d="M20.782,57.047a1.492,1.492,0,1,1,0-2.983,21.54,21.54,0,1,0,0-43.081h-3.29a1.492,1.492,0,0,1,0-2.983h3.29a24.524,24.524,0,1,1,0,49.047Z"
-                          transform="translate(-10.602 18.322)"
-                        />
-                        <path
-                          d="M19.372,37.305a1.492,1.492,0,1,1,0-2.983,11.67,11.67,0,1,0,0-23.339h-1.88a1.492,1.492,0,0,1,0-2.983h1.88a14.653,14.653,0,1,1,0,29.305Z"
-                          transform="translate(-16 -8)"
-                        />
-                        <path
-                          d="M19.372,37.305h-1.88a1.492,1.492,0,1,1,0-2.983h1.88a11.67,11.67,0,0,0,0-23.339,1.492,1.492,0,0,1,0-2.983,14.653,14.653,0,0,1,0,29.305Z"
-                          transform="translate(-16 62.894)"
-                        />
-                      </g>
-                      <g transform="translate(1492.234 382.073)">
-                        <path
-                          d="M40.523,57.047A24.524,24.524,0,0,1,40.523,8h3.29a1.492,1.492,0,1,1,0,2.983h-3.29a21.54,21.54,0,0,0,0,43.081,1.492,1.492,0,0,1,0,2.983Z"
-                          transform="translate(-16 18.322)"
-                        />
-                        <path
-                          d="M30.652,37.305A14.653,14.653,0,0,1,30.652,8h1.88a1.492,1.492,0,1,1,0,2.983h-1.88a11.67,11.67,0,0,0,0,23.339,1.492,1.492,0,0,1,0,2.983Z"
-                          transform="translate(0.678 -8)"
-                        />
-                        <path
-                          d="M32.532,37.305h-1.88A14.653,14.653,0,0,1,30.652,8a1.492,1.492,0,0,1,0,2.983,11.67,11.67,0,0,0,0,23.339h1.88a1.492,1.492,0,1,1,0,2.983Z"
-                          transform="translate(0.679 62.894)"
-                        />
-                      </g>
-                    </g>
-                    <g transform="translate(864.012 553.398)">
-                      <rect
-                        width="29.619"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(37.298)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="10.421"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(159.064)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="10.421"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(179.908)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="70.756"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(77.338)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="29.619"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(0.001 46.074)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="10.421"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(121.767 46.074)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="10.421"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(142.61 46.074)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="70.756"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(40.041 46.074)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="29.619"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(122.316 15.906)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="29.619"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(0.001 15.906)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="10.421"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(0.001)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="10.421"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(0 31.264)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="70.756"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(41.686 15.906)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="29.619"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(60.884 31.264)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="29.619"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(20.843 31.264)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="10.421"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(18.675)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="10.421"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(181.553 31.264)"
-                        fill="#6c63ff"
-                      />
-                      <rect
-                        width="70.756"
-                        height="7.13"
-                        rx="3.565"
-                        transform="translate(100.375 31.264)"
-                        fill="#6c63ff"
-                      />
-                    </g>
-                  </g>
-                  <g transform="translate(626.555 602.469)">
-                    <path
-                      d="M805.134,330.7H727.95a1.546,1.546,0,0,1-1.544-1.544V314.612h.618V329.16a.928.928,0,0,0,.927.927h77.184a.928.928,0,0,0,.927-.927V314.51h.618V329.16A1.546,1.546,0,0,1,805.134,330.7Z"
-                      transform="translate(-646.44 -292.702)"
-                      fill="#3f3d56"
-                    />
-                    <rect
-                      width="181.374"
-                      height="0.618"
-                      transform="translate(5.3 21.601)"
-                      fill="#3f3d56"
-                    />
-                    <ellipse
-                      cx="5.313"
-                      cy="5.313"
-                      rx="5.313"
-                      ry="5.313"
-                      transform="translate(0.001 16.549)"
-                      fill="#6c63ff"
-                    />
-                    <ellipse
-                      cx="5.313"
-                      cy="5.313"
-                      rx="5.313"
-                      ry="5.313"
-                      transform="translate(53.991 16.549)"
-                      fill="#6c63ff"
-                    />
-                    <ellipse
-                      cx="5.313"
-                      cy="5.313"
-                      rx="5.313"
-                      ry="5.313"
-                      transform="translate(90.634 32.165)"
-                      fill="#3f3d56"
-                    />
-                    <ellipse
-                      cx="5.313"
-                      cy="5.313"
-                      rx="5.313"
-                      ry="5.313"
-                      transform="translate(118.489 32.165)"
-                      fill="#ccc"
-                    />
-                    <ellipse
-                      cx="5.313"
-                      cy="5.313"
-                      rx="5.313"
-                      ry="5.313"
-                      transform="translate(104.991 16.549)"
-                      fill="#6c63ff"
-                    />
-                    <ellipse
-                      cx="5.313"
-                      cy="5.313"
-                      rx="5.313"
-                      ry="5.313"
-                      transform="translate(180.632 16.549)"
-                      fill="#6c63ff"
-                    />
-                    <ellipse
-                      cx="5.313"
-                      cy="5.313"
-                      rx="5.313"
-                      ry="5.313"
-                      transform="translate(154.616 16.549)"
-                      fill="#6c63ff"
-                    />
-                    <path
-                      d="M537.36,277.577a.309.309,0,0,1-.309-.309V262.022a1.546,1.546,0,0,1,1.544-1.544H553.63a.309.309,0,1,1,0,.618H538.6a.928.928,0,0,0-.927.927v15.246a.309.309,0,0,1-.309.309Z"
-                      transform="translate(-515.571 -255.358)"
-                      fill="#3f3d56"
-                    />
-                    <ellipse
-                      cx="5.313"
-                      cy="5.313"
-                      rx="5.313"
-                      ry="5.313"
-                      transform="translate(33.452 0)"
-                      fill="#e6e6e6"
-                    />
-                    <path
-                      d="M921.669,277.268h-.618V262.022a1.546,1.546,0,0,1,1.544-1.544H937.63v.618H922.6a.928.928,0,0,0-.927.927Z"
-                      transform="translate(-780.967 -255.358)"
-                      fill="#3f3d56"
-                    />
-                    <ellipse
-                      cx="5.313"
-                      cy="5.313"
-                      rx="5.313"
-                      ry="5.313"
-                      transform="translate(152.058 0)"
-                      fill="#e6e6e6"
-                    />
-                  </g>
-                  <path
-                    d="M496.375,205.477c-2.221,0-4.027.792-4.027,1.764v1.411c0,.973,1.806,1.764,4.027,1.764h93.434c2.221,0,4.027-.792,4.027-1.764v-1.411c0-.973-1.806-1.764-4.027-1.764Z"
-                    transform="translate(635.637 363.33)"
-                    fill="#f2f2f2"
-                  />
-                  <path
-                    d="M670.026,309.282c4,0,7.249,1.75,7.249,3.9v30.351c0,2.152-3.252,3.9-7.249,3.9H497.656c-4,0-7.249-1.75-7.249-3.9V313.184c0-2.152,3.252-3.9,7.249-3.9"
-                    transform="translate(637.578 297.505)"
-                    fill="#f2f2f2"
-                  />
-                  <path
-                    d="M496.375,234.581c-2.221,0-4.027.973-4.027,2.168s1.806,2.168,4.027,2.168H639.748c2.221,0,4.027-.973,4.027-2.168s-1.806-2.168-4.027-2.168Z"
-                    transform="translate(635.637 343.828)"
-                    fill="#f2f2f2"
-                  />
-                  <path
-                    d="M496.375,234.581c-2.221,0-4.027.973-4.027,2.168s1.806,2.168,4.027,2.168H639.748c2.221,0,4.027-.973,4.027-2.168s-1.806-2.168-4.027-2.168Z"
-                    transform="translate(635.637 352.828)"
-                    fill="#f2f2f2"
-                  />
-                  <path
-                    d="M891.9,191.277H840.311a1.683,1.683,0,1,1,0-3.367H891.9a1.683,1.683,0,1,1,0,3.367Z"
-                    transform="translate(-212.074 93.872)"
-                    fill="#6c63ff"
-                  />
-                  <path
-                    d="M862.672,210.649H840.311a1.683,1.683,0,1,1,0-3.367h22.361a1.683,1.683,0,1,1,0,3.367Z"
-                    transform="translate(-212.074 81.146)"
-                    fill="#6c63ff"
-                  />
-                  <g transform="translate(690.275 280.103)">
-                    <ellipse
-                      cx="6.686"
-                      cy="6.686"
-                      rx="6.686"
-                      ry="6.686"
-                      transform="translate(0 0)"
-                      fill="#6c63ff"
-                    />
-                    <path
-                      d="M847.243,585.331H847.2a.874.874,0,0,1-.646-.336l-1.118-1.434a.875.875,0,0,1,.154-1.228l.04-.032a.874.874,0,0,1,1.228.154.638.638,0,0,0,.966.047l2.267-2.4a.876.876,0,0,1,1.237-.034l.037.035a.874.874,0,0,1,.034,1.237l-3.521,3.716a.874.874,0,0,1-.635.273Z"
-                      transform="translate(-841.667 -576.242)"
-                      fill="#fff"
-                    />
-                  </g>
-                  <path
-                    d="M891.9,191.277H840.311a1.683,1.683,0,1,1,0-3.367H891.9a1.683,1.683,0,1,1,0,3.367Z"
-                    transform="translate(-212.074 129.452)"
-                    fill="#6c63ff"
-                  />
-                  <path
-                    d="M862.672,210.649H840.311a1.683,1.683,0,1,1,0-3.367h22.361a1.683,1.683,0,1,1,0,3.367Z"
-                    transform="translate(-212.074 116.727)"
-                    fill="#6c63ff"
-                  />
-                  <g transform="translate(690.275 315.683)">
-                    <ellipse
-                      cx="6.686"
-                      cy="6.686"
-                      rx="6.686"
-                      ry="6.686"
-                      transform="translate(0 0)"
-                      fill="#e6e6e6"
-                    />
-                    <path
-                      d="M847.243,585.331H847.2a.874.874,0,0,1-.646-.336l-1.118-1.434a.875.875,0,0,1,.154-1.228l.04-.032a.874.874,0,0,1,1.228.154.638.638,0,0,0,.966.047l2.267-2.4a.876.876,0,0,1,1.237-.034l.037.035a.874.874,0,0,1,.034,1.237l-3.521,3.716a.874.874,0,0,1-.635.273Z"
-                      transform="translate(-841.667 -576.242)"
-                      fill="#fff"
-                    />
-                  </g>
-                  <path
-                    d="M891.9,191.277H840.311a1.683,1.683,0,1,1,0-3.367H891.9a1.683,1.683,0,1,1,0,3.367Z"
-                    transform="translate(-212.074 165.032)"
-                    fill="#6c63ff"
-                  />
-                  <path
-                    d="M862.672,210.649H840.311a1.683,1.683,0,1,1,0-3.367h22.361a1.683,1.683,0,1,1,0,3.367Z"
-                    transform="translate(-212.074 152.307)"
-                    fill="#6c63ff"
-                  />
-                  <g transform="translate(690.275 351.262)">
-                    <ellipse
-                      cx="6.686"
-                      cy="6.686"
-                      rx="6.686"
-                      ry="6.686"
-                      transform="translate(0 0)"
-                      fill="#e6e6e6"
-                    />
-                    <path
-                      d="M847.243,585.331H847.2a.874.874,0,0,1-.646-.336l-1.118-1.434a.875.875,0,0,1,.154-1.228l.04-.032a.874.874,0,0,1,1.228.154.638.638,0,0,0,.966.047l2.267-2.4a.876.876,0,0,1,1.237-.034l.037.035a.874.874,0,0,1,.034,1.237l-3.521,3.716a.874.874,0,0,1-.635.273Z"
-                      transform="translate(-841.667 -576.242)"
-                      fill="#fff"
-                    />
-                  </g>
-                  <path
-                    d="M891.9,191.277H840.311a1.683,1.683,0,1,1,0-3.367H891.9a1.683,1.683,0,1,1,0,3.367Z"
-                    transform="translate(-212.074 200.611)"
-                    fill="#e6e6e6"
-                  />
-                  <path
-                    d="M862.672,210.649H840.311a1.683,1.683,0,1,1,0-3.367h22.361a1.683,1.683,0,1,1,0,3.367Z"
-                    transform="translate(-212.074 187.886)"
-                    fill="#e6e6e6"
-                  />
-                  <g transform="translate(690.275 386.842)">
-                    <ellipse
-                      cx="6.686"
-                      cy="6.686"
-                      rx="6.686"
-                      ry="6.686"
-                      transform="translate(0 0)"
-                      fill="#e6e6e6"
-                    />
-                    <path
-                      d="M847.243,585.331H847.2a.874.874,0,0,1-.646-.336l-1.118-1.434a.875.875,0,0,1,.154-1.228l.04-.032a.874.874,0,0,1,1.228.154.638.638,0,0,0,.966.047l2.267-2.4a.876.876,0,0,1,1.237-.034l.037.035a.874.874,0,0,1,.034,1.237l-3.521,3.716a.874.874,0,0,1-.635.273Z"
-                      transform="translate(-841.667 -576.242)"
-                      fill="#fff"
-                    />
-                  </g>
-                  <path
-                    d="M891.9,191.277H840.311a1.683,1.683,0,1,1,0-3.367H891.9a1.683,1.683,0,1,1,0,3.367Z"
-                    transform="translate(-212.074 236.191)"
-                    fill="#e6e6e6"
-                  />
-                  <path
-                    d="M862.672,210.649H840.311a1.683,1.683,0,1,1,0-3.367h22.361a1.683,1.683,0,1,1,0,3.367Z"
-                    transform="translate(-212.074 223.466)"
-                    fill="#e6e6e6"
-                  />
-                  <g transform="translate(690.275 422.422)">
-                    <ellipse
-                      cx="6.686"
-                      cy="6.686"
-                      rx="6.686"
-                      ry="6.686"
-                      transform="translate(0 0)"
-                      fill="#e6e6e6"
-                    />
-                    <path
-                      d="M847.243,585.331H847.2a.874.874,0,0,1-.646-.336l-1.118-1.434a.875.875,0,0,1,.154-1.228l.04-.032a.874.874,0,0,1,1.228.154.638.638,0,0,0,.966.047l2.267-2.4a.876.876,0,0,1,1.237-.034l.037.035a.874.874,0,0,1,.034,1.237l-3.521,3.716a.874.874,0,0,1-.635.273Z"
-                      transform="translate(-841.667 -576.242)"
-                      fill="#fff"
-                    />
-                  </g>
-                  <g transform="translate(587.66 -327.248)">
-                    <path
-                      d="M345.8,318H248.438a.3.3,0,0,1-.3-.3c0-2.109,97.967-.168,97.967,0A.3.3,0,0,1,345.8,318Z"
-                      transform="translate(381.092 338.302)"
-                      fill="#090814"
-                    />
-                    <path
-                      d="M290.014,369.407h-8.855a.905.905,0,0,1-.9-.9V356.3a.905.905,0,0,1,.9-.9h8.855a.905.905,0,0,1,.9.9V368.5A.905.905,0,0,1,290.014,369.407Z"
-                      transform="translate(360.316 283.544)"
-                      fill="#6c63ff"
-                    />
-                    <path
-                      d="M335.73,348.208h-8.855a.905.905,0,0,1-.9-.9V323.518a.905.905,0,0,1,.9-.9h8.855a.905.905,0,0,1,.9.9V347.3A.905.905,0,0,1,335.73,348.208Z"
-                      transform="translate(330.75 304.743)"
-                      fill="#6c63ff"
-                    />
-                    <path
-                      d="M381.445,369.407H372.59a.905.905,0,0,1-.9-.9V356.3a.905.905,0,0,1,.9-.9h8.855a.905.905,0,0,1,.9.9V368.5A.905.905,0,0,1,381.445,369.407Z"
-                      transform="translate(301.181 283.544)"
-                      fill="#6c63ff"
-                    />
-                    <path
-                      d="M427.161,339.839h-8.855a.886.886,0,0,1-.9-.863V310.539a.886.886,0,0,1,.9-.863h8.855a.886.886,0,0,1,.9.863v28.437A.886.886,0,0,1,427.161,339.839Z"
-                      transform="translate(271.615 313.112)"
-                      fill="#6c63ff"
-                    />
-                    <path
-                      d="M472.877,324.777h-8.855a.905.905,0,0,1-.9-.9V287.291a.905.905,0,0,1,.9-.9h8.855a.905.905,0,0,1,.9.9v36.581A.905.905,0,0,1,472.877,324.777Z"
-                      transform="translate(242.049 328.175)"
-                      fill="#6c63ff"
-                    />
-                  </g>
-                </g>
-              </svg>
+                <SvgComp />
+              </motion.div>
             </div>
           </div>
         </section>
@@ -557,81 +60,38 @@ export function HeroSection() {
               <div className="md:max-w-44 md:border-r md:pr-6">
                 <p className="text-end text-sm">Powering the best teams</p>
               </div>
-              <div className="relative py-6 md:w-[calc(100%-11rem)]">
+              <section
+                id="teams"
+                className="relative py-6 md:w-[calc(100%-11rem)]"
+              >
                 <InfiniteSlider gap={112}>
-                  <div className="flex">
-                    <img
-                      className="mx-auto h-5 w-fit dark:invert"
-                      src="https://html.tailus.io/blocks/customers/nvidia.svg"
-                      alt="Nvidia Logo"
-                      height="20"
-                      width="auto"
-                    />
+                  <div className="flex items-center gap-3">
+                    <RiNotionFill size={40} />
+                    <span className="text-xl">Notion</span>
                   </div>
-
-                  <div className="flex">
-                    <img
-                      className="mx-auto h-4 w-fit dark:invert"
-                      src="https://html.tailus.io/blocks/customers/column.svg"
-                      alt="Column Logo"
-                      height="16"
-                      width="auto"
-                    />
+                  <div className="flex items-center gap-3">
+                    <SiEvernote size={40} />
+                    <span className="text-xl">Evernote</span>
                   </div>
-                  <div className="flex">
-                    <img
-                      className="mx-auto h-4 w-fit dark:invert"
-                      src="https://html.tailus.io/blocks/customers/github.svg"
-                      alt="GitHub Logo"
-                      height="16"
-                      width="auto"
-                    />
+                  <div className="flex items-center gap-3">
+                    <SiObsidian size={40} />
+                    <span className="text-xl">Obsidian</span>
                   </div>
-                  <div className="flex">
-                    <img
-                      className="mx-auto h-5 w-fit dark:invert"
-                      src="https://html.tailus.io/blocks/customers/nike.svg"
-                      alt="Nike Logo"
-                      height="20"
-                      width="auto"
-                    />
+                  <div className="flex items-center gap-3">
+                    <FaGoogleDrive size={40} />
+                    <span className="text-xl">Drive</span>
                   </div>
-                  <div className="flex">
-                    <img
-                      className="mx-auto h-5 w-fit dark:invert"
-                      src="https://html.tailus.io/blocks/customers/lemonsqueezy.svg"
-                      alt="Lemon Squeezy Logo"
-                      height="20"
-                      width="auto"
-                    />
+                  <div className="flex items-center gap-3">
+                    <FaDropbox size={40} />
+                    <span className="text-xl">Dropbox</span>
                   </div>
-                  <div className="flex">
-                    <img
-                      className="mx-auto h-4 w-fit dark:invert"
-                      src="https://html.tailus.io/blocks/customers/laravel.svg"
-                      alt="Laravel Logo"
-                      height="16"
-                      width="auto"
-                    />
+                  <div className="flex items-center gap-3">
+                    <FaSlack size={40} />
+                    <span className="text-xl">Slack</span>
                   </div>
-                  <div className="flex">
-                    <img
-                      className="mx-auto h-7 w-fit dark:invert"
-                      src="https://html.tailus.io/blocks/customers/lilly.svg"
-                      alt="Lilly Logo"
-                      height="28"
-                      width="auto"
-                    />
-                  </div>
-
-                  <div className="flex">
-                    <img
-                      className="mx-auto h-6 w-fit dark:invert"
-                      src="https://html.tailus.io/blocks/customers/openai.svg"
-                      alt="OpenAI Logo"
-                      height="24"
-                      width="auto"
-                    />
+                  <div className="flex items-center gap-3">
+                    <FaTrello size={40} />
+                    <span className="text-xl">Trello</span>
                   </div>
                 </InfiniteSlider>
 
@@ -647,7 +107,7 @@ export function HeroSection() {
                   direction="right"
                   blurIntensity={1}
                 />
-              </div>
+              </section>
             </div>
           </div>
         </section>
@@ -658,7 +118,7 @@ export function HeroSection() {
 
 const menuItems = [
   { name: "Features", href: "#link" },
-  { name: "Solution", href: "#link" },
+  { name: "Teams", href: "#teams" },
   { name: "Pricing", href: "#link" },
   { name: "About", href: "#link" },
 ];
@@ -666,6 +126,7 @@ const menuItems = [
 const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
   const { theme } = useTheme();
+  const navigate = useNavigate();
   return (
     <header>
       <nav
@@ -699,12 +160,12 @@ const HeroHeader = () => {
                 <ul className="flex gap-8 text-sm">
                   {menuItems.map((item, index) => (
                     <li key={index}>
-                      <Link
-                        to={item.href}
+                      <a
+                        href={item.href}
                         className="text-muted-foreground hover:text-accent-foreground block duration-150"
                       >
                         <span>{item.name}</span>
-                      </Link>
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -727,15 +188,26 @@ const HeroHeader = () => {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row items-center sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button asChild variant="outline" size="sm">
-                  <Link to="#">
-                    <span>Login</span>
-                  </Link>
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  asChild
+                  variant="outline"
+                  size="sm"
+                >
+                  <span>Login</span>
                 </Button>
-                <Button asChild size="sm">
-                  <Link to="#">
-                    <span>Sign Up</span>
-                  </Link>
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigate("/signup");
+                  }}
+                  asChild
+                  size="sm"
+                >
+                  <span>Sign Up</span>
                 </Button>
                 <ModeToggle />
               </div>
