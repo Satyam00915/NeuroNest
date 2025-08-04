@@ -1,6 +1,6 @@
 import { Router } from "express";
 import authCheck from "../Middleware/auth.middleware";
-import { AddArticle } from "../Controllers/content.controller";
+import { AddArticle, AddVideo } from "../Controllers/content.controller";
 
 const contentRouter = Router();
 
@@ -10,6 +10,7 @@ contentRouter.get("/", (req, res) => {
   });
 });
 
-contentRouter.post("/", authCheck, AddArticle);
+contentRouter.post("/article", authCheck, AddArticle);
+contentRouter.post("/video", authCheck, AddVideo);
 
 export default contentRouter;

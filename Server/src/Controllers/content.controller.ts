@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
-import { articleSchema } from "../zod/content.zod";
+import { articleSchema, videoSchema } from "../zod/content.zod";
 import Content from "../Models/content.model";
 import { AuthenticatedRequest } from "../Middleware/auth.middleware";
 import Tag from "../Models/tags.model";
 import mongoose from "mongoose";
+import { tagUpdater } from "../Lib/taghelper";
 
 class CustomError extends Error {
   code: number;
@@ -34,20 +35,7 @@ export const AddArticle = async (req: AuthenticatedRequest, res: Response) => {
       throw new CustomError("Unauthorized", 401);
     }
 
-    const newTags = await Promise.all(
-      tags.map(async (tagName: string) => {
-        if (mongoose.Types.ObjectId.isValid(tagName)) {
-          return tagName;
-        }
-
-        const existing = await Tag.findOneAndUpdate(
-          { title: tagName }, //Find by title
-          { $setOnInsert: { title: tagName } }, //Only insert if it doesn't exist
-          { upsert: true, new: true } //Create if not found, return the updated doc
-        );
-        return existing._id;
-      })
-    );
+    const newTags = await tagUpdater(tags);
 
     const content = await Content.create({
       title,
@@ -74,5 +62,43 @@ export const AddArticle = async (req: AuthenticatedRequest, res: Response) => {
 export const AddVideo = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { title, type, tags, externalUrl } = req.body;
-  } catch (error) {}
+    const { success } = videoSchema.safeParse({
+      title,
+      type,
+      tags,
+      externalUrl,
+    });
+
+    if (!success) {
+      throw new CustomError("Schema Validation Failed", 400);
+    }
+
+    const user = req.user;
+
+    if (!user) {
+      throw new CustomError("Unauthorized", 401);
+    }
+
+    const newTags = await tagUpdater(tags);
+
+    const content = await Content.create({
+      title,
+      type,
+      tags: newTags,
+      externalUrl,
+      userId: user._id,
+    });
+
+    res.json({
+      message: "Content created Successfully",
+      content,
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status((error as CustomError).code || 500).json({
+      message: (error as CustomError).message || "Server error occurred",
+      success: false,
+    });
+  }
 };
