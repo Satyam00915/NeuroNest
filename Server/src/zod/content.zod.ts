@@ -5,6 +5,7 @@ export const articleSchema = zod.object({
   type: zod.string(),
   tags: zod.array(zod.string()),
   externalUrl: zod.url(),
+  thumbnailImg: zod.string().optional(),
 });
 
 export const videoSchema = zod.object({
@@ -12,4 +13,5 @@ export const videoSchema = zod.object({
   type: zod.string(),
   tags: zod.array(zod.string()),
   externalUrl: zod.url(),
+  thumbnailImg: zod.string().optional(),
 });

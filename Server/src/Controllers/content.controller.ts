@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import { articleSchema, videoSchema } from "../zod/content.zod";
 import Content from "../Models/content.model";
 import { AuthenticatedRequest } from "../Middleware/auth.middleware";
-import Tag from "../Models/tags.model";
-import mongoose from "mongoose";
 import { tagUpdater } from "../Lib/taghelper";
 
 class CustomError extends Error {
@@ -17,12 +15,13 @@ class CustomError extends Error {
 
 export const AddArticle = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { title, type, tags, externalUrl } = req.body;
+    const { title, type, tags, externalUrl, thumbnailImg } = req.body;
     const { success } = articleSchema.safeParse({
       title,
       type,
       tags,
       externalUrl,
+      thumbnailImg,
     });
 
     if (!success) {
@@ -42,6 +41,7 @@ export const AddArticle = async (req: AuthenticatedRequest, res: Response) => {
       type,
       tags: newTags,
       externalUrl,
+      thumbnailImg,
       userId: user._id,
     });
 
@@ -61,12 +61,13 @@ export const AddArticle = async (req: AuthenticatedRequest, res: Response) => {
 
 export const AddVideo = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { title, type, tags, externalUrl } = req.body;
+    const { title, type, tags, externalUrl, thumbnailImg } = req.body;
     const { success } = videoSchema.safeParse({
       title,
       type,
       tags,
       externalUrl,
+      thumbnailImg,
     });
 
     if (!success) {
@@ -86,6 +87,7 @@ export const AddVideo = async (req: AuthenticatedRequest, res: Response) => {
       type,
       tags: newTags,
       externalUrl,
+      thumbnailImg,
       userId: user._id,
     });
 
