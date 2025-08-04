@@ -22,12 +22,12 @@ const contentSchema = new mongoose.Schema(
     tags: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
       },
     ],
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
   },
   {
@@ -36,3 +36,5 @@ const contentSchema = new mongoose.Schema(
 );
 
 const Content = mongoose.model("Content", contentSchema);
+
+export default Content;

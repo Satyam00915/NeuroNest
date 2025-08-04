@@ -1,7 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 import bcrypt from "bcrypt";
 
 export interface UserDocument extends Document {
+  _id: Types.ObjectId;
   fullName: string;
   username: string;
   email: string;

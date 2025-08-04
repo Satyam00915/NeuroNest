@@ -1,6 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 
-const tagsSchema = new mongoose.Schema({
+interface TagDocument extends Document {
+  _id: Types.ObjectId;
+  title: string;
+}
+
+const tagsSchema = new mongoose.Schema<TagDocument>({
   title: {
     type: String,
     required: true,

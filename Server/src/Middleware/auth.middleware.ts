@@ -12,7 +12,7 @@ class CustomError extends Error {
   }
 }
 
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   user?: UserDocument;
 }
 

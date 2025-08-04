@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User from "../Models/user.model";
+import User, { UserDocument } from "../Models/user.model";
 import generateTokens from "../Lib/generateTokens";
 import { storeTokens } from "../Lib/storeTokens";
 import { setCookies } from "../Lib/setCookies";
