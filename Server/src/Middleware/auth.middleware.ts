@@ -14,6 +14,7 @@ class CustomError extends Error {
 
 export interface AuthenticatedRequest extends Request {
   user?: UserDocument;
+  file?: Express.Multer.File;
 }
 
 export default async function authCheck(

@@ -4,11 +4,18 @@ const contentTypes = ["image", "video", "article", "audio"];
 
 const contentSchema = new mongoose.Schema(
   {
-    fileName: {
-      type: String,
-    },
-    externalUrl: {
-      type: String,
+    file: {
+      public_id: {
+        type: String,
+        default: null,
+      },
+      cloudinary_url: {
+        type: String,
+        default: null,
+      },
+      externalUrl: {
+        type: String,
+      },
     },
     type: {
       type: String,
