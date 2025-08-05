@@ -117,7 +117,7 @@ export function HeroSection() {
 }
 
 const menuItems = [
-  { name: "Features", href: "#link" },
+  { name: "Features", href: "#features" },
   { name: "Teams", href: "#teams" },
   { name: "Pricing", href: "#link" },
   { name: "About", href: "#link" },
