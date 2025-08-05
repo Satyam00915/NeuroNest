@@ -118,9 +118,8 @@ export function HeroSection() {
 
 const menuItems = [
   { name: "Features", href: "#features" },
-  { name: "Teams", href: "#teams" },
-  { name: "Pricing", href: "#link" },
-  { name: "About", href: "#link" },
+  { name: "FAQ", href: "#faq" },
+  { name: "About", href: "#about" },
 ];
 
 const HeroHeader = () => {
@@ -177,12 +176,12 @@ const HeroHeader = () => {
                 <ul className="space-y-6 text-base">
                   {menuItems.map((item, index) => (
                     <li key={index}>
-                      <Link
-                        to={item.href}
+                      <a
+                        href={item.href}
                         className="text-muted-foreground hover:text-accent-foreground block duration-150"
                       >
                         <span>{item.name}</span>
-                      </Link>
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -219,7 +218,7 @@ const HeroHeader = () => {
   );
 };
 
-const LightLogo = () => {
+export const LightLogo = () => {
   return (
     <svg
       version="1.0"
