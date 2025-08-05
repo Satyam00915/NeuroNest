@@ -14,15 +14,15 @@ const Features = () => {
           </p>
         </div>
 
-        <FadeContent
-          blur={true}
-          duration={1000}
-          easing="ease-out"
-          initialOpacity={0}
-        >
-          <div className="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12  md:space-y-0">
-            {/* 1. Content Reach */}
-            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl">
+        <div className="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12  md:space-y-0">
+          {/* 1. Content Reach */}
+          <FadeContent
+            blur={true}
+            duration={500}
+            easing="ease-out"
+            initialOpacity={0}
+          >
+            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl shadow-lg shadow-zinc-300 dark:shadow-zinc-900">
               <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
                 {/* Same icon */}
                 <svg
@@ -46,9 +46,16 @@ const Features = () => {
                 your ideas seamlessly across the web.
               </p>
             </div>
-
-            {/* 2. Secure & Compliant */}
-            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl">
+          </FadeContent>
+          {/* 2. Secure & Compliant */}
+          <FadeContent
+            blur={true}
+            duration={500}
+            easing="ease-out"
+            initialOpacity={0}
+            delay={300}
+          >
+            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl shadow-lg shadow-zinc-300 dark:shadow-zinc-900">
               <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
                 <svg
                   className="w-6 h-6 text-primary-600 lg:w-8 lg:h-8 dark:text-primary-300"
@@ -67,9 +74,16 @@ const Features = () => {
                 content and identity protected.
               </p>
             </div>
-
-            {/* 3. Smart Workflows */}
-            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl ">
+          </FadeContent>
+          {/* 3. Smart Workflows */}
+          <FadeContent
+            blur={true}
+            duration={500}
+            easing="ease-out"
+            initialOpacity={0}
+            delay={600}
+          >
+            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl shadow-lg shadow-zinc-300 dark:shadow-zinc-900">
               <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
                 <svg
                   className="w-6 h-6 text-primary-600 lg:w-7 lg:h-7 dark:text-primary-300"
@@ -93,9 +107,16 @@ const Features = () => {
                 smarter so you don’t have to.
               </p>
             </div>
-
-            {/* 4. Insights & Analytics */}
-            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl ">
+          </FadeContent>
+          {/* 4. Insights & Analytics */}
+          <FadeContent
+            blur={true}
+            duration={500}
+            easing="ease-out"
+            initialOpacity={0}
+            delay={1000}
+          >
+            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl shadow-lg shadow-zinc-300 dark:shadow-zinc-900">
               <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
                 <svg
                   className="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300"
@@ -114,9 +135,16 @@ const Features = () => {
                 engagement stats in real-time.
               </p>
             </div>
-
-            {/* 5. Minimalist UI */}
-            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl ">
+          </FadeContent>
+          {/* 5. Minimalist UI */}
+          <FadeContent
+            blur={true}
+            duration={500}
+            easing="ease-out"
+            initialOpacity={0}
+            delay={1200}
+          >
+            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl shadow-lg shadow-zinc-300 dark:shadow-zinc-900">
               <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
                 <svg
                   className="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300"
@@ -135,13 +163,21 @@ const Features = () => {
                 Minimalist UI
               </h3>
               <p className="text-gray-500 dark:text-gray-400">
-                Designed to look sleek and feel intuitive. Customize your
-                dashboard to fit your vibe.
+                Designed to look sleek and feel intuitive. <br />
+                Customize your dashboard <br /> to fit your vibe.
               </p>
             </div>
+          </FadeContent>
 
-            {/* 6. Scalable Infra */}
-            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl ">
+          {/* 6. Scalable Infra */}
+          <FadeContent
+            blur={true}
+            duration={500}
+            easing="ease-out"
+            initialOpacity={0}
+            delay={1400}
+          >
+            <div className="border hover:scale-105 transition-all duration-500 py-6 px-3 rounded-2xl shadow-lg shadow-zinc-300 dark:shadow-zinc-900">
               <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
                 <svg
                   className="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300"
@@ -164,8 +200,8 @@ const Features = () => {
                 ambitions, no configs needed.
               </p>
             </div>
-          </div>
-        </FadeContent>
+          </FadeContent>
+        </div>
       </div>
     </section>
   );
