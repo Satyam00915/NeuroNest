@@ -1,8 +1,22 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 const contentTypes = ["image", "video", "article", "audio"];
 
-const contentSchema = new mongoose.Schema(
+export interface ContentDoc extends Document {
+  _id: Types.ObjectId;
+  file: {
+    public_id?: string;
+    cloudinary_url?: string;
+    external_url?: string;
+  };
+  type: string;
+  title: string;
+  tags: Types.ObjectId[];
+  thumbnailImg?: string;
+  userId: Types.ObjectId;
+}
+
+const contentSchema = new mongoose.Schema<ContentDoc>(
   {
     file: {
       public_id: {

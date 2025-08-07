@@ -1,11 +1,16 @@
 import { Response } from "express";
-import { articleSchema, imageSchema, videoSchema } from "../zod/content.zod";
+import {
+  articleSchema,
+  audioSchema,
+  imageSchema,
+  videoSchema,
+} from "../zod/content.zod";
 import Content from "../Models/content.model";
 import { AuthenticatedRequest } from "../Middleware/auth.middleware";
 import { tagUpdater } from "../Lib/taghelper";
 import { dataUri } from "../Lib/multer";
 import cloudinary from "../Lib/cloudinary";
-import { log } from "console";
+import { UploadApiResponse } from "cloudinary";
 
 class CustomError extends Error {
   code: number;
@@ -183,6 +188,85 @@ export const AddImage = async (req: AuthenticatedRequest, res: Response) => {
     return res.status((error as CustomError).code || 500).json({
       message: (error as CustomError).message || "Server error occurred",
       success: false,
+    });
+  }
+};
+
+export const AddAudio = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { title, type, tags } = req.body;
+    const audiofile = req.file;
+
+    const { success, error } = audioSchema.safeParse({
+      title,
+      tags,
+      type,
+    });
+
+    if (!success) {
+      throw new CustomError("Schema Validation Failed", 400);
+    }
+
+    console.log(audiofile);
+
+    if (!audiofile) {
+      throw new CustomError("No Audio File present", 400);
+    }
+
+    const user = req.user;
+
+    if (!user) {
+      throw new CustomError("Unauthorized User", 401);
+    }
+
+    const streamupload = (
+      buffer: Buffer,
+      folder: string,
+      publicid: string
+    ): Promise<UploadApiResponse> => {
+      return new Promise((res, rej) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              resource_type: "raw",
+              folder: folder,
+              public_id: publicid,
+            },
+            (err, result) => (err ? rej(err) : res(result as UploadApiResponse))
+          )
+          .end(buffer);
+      });
+    };
+
+    const result: UploadApiResponse = await streamupload(
+      audiofile.buffer,
+      "neuronest/audio",
+      `AudioFile_${user._id}-${Date.now()}`
+    );
+
+    const newTags = await tagUpdater(tags);
+
+    const content = await Content.create({
+      title,
+      tags: newTags,
+      type,
+      file: {
+        public_id: result.public_id,
+        cloudinary_url: result.secure_url,
+      },
+      userId: user._id,
+    });
+
+    res.json({
+      content,
+      message: "Audio File Added Successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status((error as CustomError).code || 500).json({
+      error,
+      message: (error as CustomError).message || "Server error",
     });
   }
 };

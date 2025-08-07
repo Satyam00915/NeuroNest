@@ -22,3 +22,9 @@ export const imageSchema = zod.object({
   tags: zod.array(zod.string()),
   externalUrl: zod.url().optional(),
 });
+
+export const audioSchema = zod.object({
+  title: zod.string().min(6),
+  type: zod.string(),
+  tags: zod.array(zod.string()),
+});
