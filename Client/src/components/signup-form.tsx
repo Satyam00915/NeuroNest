@@ -82,7 +82,7 @@ export function SignupForm({
                   <PasswordSignUp />
                 </div>
                 <Button type="submit" className="w-full">
-                  SignUp
+                  Sign Up
                 </Button>
               </div>
               <div className="text-center text-sm">
