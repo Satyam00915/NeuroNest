@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Password from "./ui/Password";
+import PasswordSignUp from "./ui/PasswordSignup";
 
 export function SignupForm({
   className,
@@ -19,8 +19,8 @@ export function SignupForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>Login with your Google account</CardDescription>
+          <CardTitle className="text-xl">Welcome To NeuroNST</CardTitle>
+          <CardDescription>Signup with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
           <form>
@@ -43,6 +43,24 @@ export function SignupForm({
               </div>
               <div className="grid gap-6">
                 <div className="grid gap-3">
+                  <Label htmlFor="fullname">FullName</Label>
+                  <Input
+                    id="fullname"
+                    type="name"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="fullname">UserName</Label>
+                  <Input
+                    id="username"
+                    type="username"
+                    placeholder="Lucifer915"
+                    required
+                  />
+                </div>
+                <div className="grid gap-3">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
@@ -61,16 +79,16 @@ export function SignupForm({
                       Forgot your password?
                     </a>
                   </div>
-                  <Password />
+                  <PasswordSignUp />
                 </div>
                 <Button type="submit" className="w-full">
-                  Login
+                  SignUp
                 </Button>
               </div>
               <div className="text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <a href="/signup" className="underline underline-offset-4">
-                  Sign up
+                Already have an account?{" "}
+                <a href="/login" className="underline underline-offset-4">
+                  Sign In
                 </a>
               </div>
             </div>
