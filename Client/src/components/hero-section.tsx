@@ -141,7 +141,11 @@ const HeroHeader = () => {
                   aria-label="home"
                   className="flex items-center space-x-2"
                 >
-                  {theme === "dark" ? <DarkLogo /> : <LightLogo />}
+                  {theme === "dark" ? (
+                    <DarkLogo size="40pt" />
+                  ) : (
+                    <LightLogo size="40pt" />
+                  )}
                 </Link>
                 <div className="comic-neue-bold text-xl">NeuroNST</div>
               </div>
@@ -218,13 +222,13 @@ const HeroHeader = () => {
   );
 };
 
-export const LightLogo = () => {
+export const LightLogo = ({ size }: { size: string }) => {
   return (
     <svg
       version="1.0"
       xmlns="http://www.w3.org/2000/svg"
-      width="40pt"
-      height="40pt"
+      width={size}
+      height={size}
       viewBox="0 0 300.000000 300.000000"
       preserveAspectRatio="xMidYMid meet"
     >
@@ -245,15 +249,15 @@ export const LightLogo = () => {
   );
 };
 
-const DarkLogo = () => {
+export const DarkLogo = ({ size }: { size: string }) => {
   return (
     <svg
       version="1.0"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 300.000000 300.000000"
       preserveAspectRatio="xMidYMid meet"
-      width="40pt"
-      height="40pt"
+      width={size}
+      height={size}
     >
       {" "}
       <g
