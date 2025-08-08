@@ -2,8 +2,16 @@ import { useId, useMemo, useState } from "react";
 import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
+import { useUserStore } from "@/store/userStore";
+import type { UseFormRegisterReturn } from "react-hook-form";
+import type { UserFormData } from "@/schema/userSchema";
 
-export default function PasswordSignUp() {
+export default function PasswordSignUp({
+  registerProps,
+}: {
+  registerProps?: UseFormRegisterReturn<keyof UserFormData>;
+}) {
+  const updateUserDetails = useUserStore((state) => state.updateUserDetails);
   const id = useId();
   const [password, setPassword] = useState("");
   const [showStrength, setShowStrength] = useState(false);
@@ -52,10 +60,12 @@ export default function PasswordSignUp() {
       <div className="*:not-first:mt-2">
         <div className="relative">
           <Input
+            {...registerProps}
             onChangeCapture={(e) => {
               if (!e.currentTarget.value) {
                 setShowStrength(false);
               } else {
+                updateUserDetails({ password: e.currentTarget.value });
                 setShowStrength(true);
               }
             }}

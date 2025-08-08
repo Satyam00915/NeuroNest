@@ -10,11 +10,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import PasswordSignUp from "./ui/PasswordSignup";
+import { useUserStore } from "@/store/userStore";
+import { useForm } from "react-hook-form";
+import { userSchema, type UserFormData } from "@/schema/userSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const updateUserDetails = useUserStore((state) => state.updateUserDetails);
+  const userDetails = useUserStore((state) => state.userDetails);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserFormData>({
+    resolver: zodResolver(userSchema),
+  });
+
+  function handleSignUp() {
+    console.log(userDetails);
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -23,7 +42,7 @@ export function SignupForm({
           <CardDescription>Signup with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(handleSignUp)}>
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
                 <Button variant="outline" className="w-full">
@@ -45,29 +64,56 @@ export function SignupForm({
                 <div className="grid gap-3">
                   <Label htmlFor="fullname">FullName</Label>
                   <Input
+                    {...register("fullName")}
                     id="fullname"
+                    onChange={(e) =>
+                      updateUserDetails({ fullName: e.currentTarget.value })
+                    }
                     type="name"
                     placeholder="John Doe"
                     required
                   />
+                  {errors.fullName && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.fullName.message}
+                    </p>
+                  )}
                 </div>
                 <div className="grid gap-3">
-                  <Label htmlFor="fullname">UserName</Label>
+                  <Label htmlFor="username">UserName</Label>
                   <Input
+                    {...register("username")}
                     id="username"
                     type="username"
+                    onChange={(e) =>
+                      updateUserDetails({ username: e.currentTarget.value })
+                    }
                     placeholder="Lucifer915"
                     required
                   />
+                  {errors.username && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.username.message}
+                    </p>
+                  )}
                 </div>
                 <div className="grid gap-3">
                   <Label htmlFor="email">Email</Label>
                   <Input
+                    {...register("email")}
                     id="email"
+                    onChange={(e) =>
+                      updateUserDetails({ email: e.currentTarget.value })
+                    }
                     type="email"
                     placeholder="m@example.com"
                     required
                   />
+                  {errors.email && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
                 <div className="grid gap-3">
                   <div className="flex items-center">
@@ -79,7 +125,12 @@ export function SignupForm({
                       Forgot your password?
                     </a>
                   </div>
-                  <PasswordSignUp />
+                  <PasswordSignUp registerProps={register("password")} />
+                  {errors.password && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
                 </div>
                 <Button type="submit" className="w-full">
                   Sign Up
