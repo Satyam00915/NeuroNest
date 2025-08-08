@@ -2,8 +2,16 @@ import { useId, useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
+import type { UseFormRegisterReturn } from "react-hook-form";
+import type { LoginFormData } from "@/schema/userSchema";
 
-export default function Password() {
+export default function Password({
+  onChange,
+  registerProps,
+}: {
+  registerProps: UseFormRegisterReturn<keyof LoginFormData>;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   const id = useId();
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
@@ -13,6 +21,8 @@ export default function Password() {
     <div className="*:not-first:mt-2">
       <div className="relative">
         <Input
+          {...registerProps}
+          onChange={onChange}
           id={id}
           className="pe-9"
           placeholder="Password"

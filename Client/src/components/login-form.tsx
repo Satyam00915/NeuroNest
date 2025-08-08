@@ -10,11 +10,28 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Password from "./ui/Password";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginFormData } from "@/schema/userSchema";
+import { useUserStore } from "@/store/userStore";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const updateUserDetails = useUserStore((state) => state.updateUserDetails);
+  const userDetails = useUserStore((state) => state.userDetails);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  function handleSignIn() {
+    console.log(userDetails);
+  }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -23,7 +40,7 @@ export function LoginForm({
           <CardDescription>Login with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(handleSignIn)}>
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
                 <Button variant="outline" className="w-full">
@@ -45,11 +62,20 @@ export function LoginForm({
                 <div className="grid gap-3">
                   <Label htmlFor="email">Email</Label>
                   <Input
+                    {...register("email")}
+                    onChange={(e) =>
+                      updateUserDetails({ email: e.currentTarget.value })
+                    }
                     id="email"
                     type="email"
                     placeholder="m@example.com"
                     required
                   />
+                  {errors.email && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
                 <div className="grid gap-3">
                   <div className="flex items-center">
@@ -61,7 +87,17 @@ export function LoginForm({
                       Forgot your password?
                     </a>
                   </div>
-                  <Password />
+                  <Password
+                    onChange={(e) => {
+                      updateUserDetails({ password: e.currentTarget.value });
+                    }}
+                    registerProps={register("password")}
+                  />
+                  {errors.password && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
                 </div>
                 <Button type="submit" className="w-full">
                   Login
