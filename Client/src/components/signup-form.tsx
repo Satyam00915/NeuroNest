@@ -48,6 +48,7 @@ export function SignupForm({
           password: userDetails.password,
         },
         {
+          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
