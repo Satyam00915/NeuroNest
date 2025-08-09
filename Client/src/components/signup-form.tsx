@@ -14,6 +14,10 @@ import { useUserStore } from "@/store/userStore";
 import { useForm } from "react-hook-form";
 import { userSchema, type UserFormData } from "@/schema/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import { useState } from "react";
+import Loader from "./ui/Loader";
 
 export function SignupForm({
   className,
@@ -21,6 +25,7 @@ export function SignupForm({
 }: React.ComponentProps<"div">) {
   const updateUserDetails = useUserStore((state) => state.updateUserDetails);
   const userDetails = useUserStore((state) => state.userDetails);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -31,11 +36,42 @@ export function SignupForm({
   });
 
   function handleSignUp() {
-    console.log(userDetails);
+    setLoading(true);
+
+    axios
+      .post(
+        "https://neuronest-oevp.onrender.com/api/user/signup",
+        {
+          fullName: userDetails.fullName,
+          username: userDetails.username,
+          email: userDetails.email,
+          password: userDetails.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        const response = res.data;
+        console.log(response);
+        if (response.success) {
+          setLoading(false);
+          toast.success("User Signed Up Successfully!");
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(err.response.data.message);
+      });
   }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <div>
+        <Toaster />
+      </div>
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome To NeuroNST</CardTitle>
@@ -134,7 +170,7 @@ export function SignupForm({
                   )}
                 </div>
                 <Button type="submit" className="w-full">
-                  Sign Up
+                  {loading ? <Loader /> : "Sign Up"}
                 </Button>
               </div>
               <div className="text-center text-sm">

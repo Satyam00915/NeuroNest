@@ -14,6 +14,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "@/schema/userSchema";
 import { useUserStore } from "@/store/userStore";
+import { useState } from "react";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import Loader from "./ui/Loader";
 
 export function LoginForm({
   className,
@@ -21,6 +25,7 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const updateUserDetails = useUserStore((state) => state.updateUserDetails);
   const userDetails = useUserStore((state) => state.userDetails);
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -30,10 +35,35 @@ export function LoginForm({
   });
 
   function handleSignIn() {
-    console.log(userDetails);
+    setLoading(true);
+    axios
+      .post(
+        "https://neuronest-oevp.onrender.com/api/user/signin",
+        {
+          email: userDetails.email,
+          password: userDetails.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        const response = res.data;
+        if (response.success) {
+          setLoading(false);
+          toast.success(response.message);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(err.response.data.message);
+      });
   }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <Toaster />
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
@@ -100,7 +130,7 @@ export function LoginForm({
                   )}
                 </div>
                 <Button type="submit" className="w-full">
-                  Login
+                  {loading ? <Loader /> : "Sign In"}
                 </Button>
               </div>
               <div className="text-center text-sm">
