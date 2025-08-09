@@ -13,7 +13,12 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://neuro-nest-d2fn.vercel.app/",
+    credentials: true,
+  })
+);
 
 app.use("/api/user", userRouter);
 app.use("/api/content", contentRouter);
