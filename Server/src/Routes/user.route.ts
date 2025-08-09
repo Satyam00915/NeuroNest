@@ -1,16 +1,18 @@
-import { Router } from "express";
+import { Response, Router } from "express";
 import {
   LogOut,
   RefreshToken,
   SignIn,
   SignUp,
 } from "../Controllers/user.controller";
+import authCheck, { AuthenticatedRequest } from "../Middleware/auth.middleware";
 
 const userRouter = Router();
 
-userRouter.get("/", (req, res) => {
+userRouter.get("/", authCheck, (req: AuthenticatedRequest, res: Response) => {
   res.json({
-    message: "User Router",
+    message: "User Router reached or not",
+    user: req.user,
   });
 });
 
