@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, type Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User, { UserDocument } from "../Models/user.model";
 import { TokenInterface } from "../Lib/token";
