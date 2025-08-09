@@ -93,7 +93,7 @@ export const SignIn = async (req: Request, res: Response) => {
         email: userExists.email,
         username: userExists.username,
       },
-      message: "SignIn successfull",
+      message: "Sign In successfull",
       success: true,
     });
   } catch (error) {

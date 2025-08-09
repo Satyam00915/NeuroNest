@@ -4,6 +4,7 @@ import { connectDb } from "./Lib/connectDb";
 import userRouter from "./Routes/user.route";
 import cookieParser from "cookie-parser";
 import contentRouter from "./Routes/content.route";
+import cors from "cors";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/user", userRouter);
 app.use("/api/content", contentRouter);
