@@ -1,9 +1,11 @@
 import { Response, Router } from "express";
 import {
+  ForgotPassword,
   LogOut,
   RefreshToken,
   SignIn,
   SignUp,
+  VerifyOTP,
 } from "../Controllers/user.controller";
 import authCheck, { AuthenticatedRequest } from "../Middleware/auth.middleware";
 
@@ -20,5 +22,8 @@ userRouter.post("/signup", SignUp);
 userRouter.post("/signin", SignIn);
 userRouter.get("/refresh", RefreshToken);
 userRouter.get("/logout", LogOut);
+
+userRouter.post("/forgotPass", ForgotPassword);
+userRouter.post("/verify", VerifyOTP);
 
 export default userRouter;

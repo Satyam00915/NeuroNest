@@ -1,11 +1,17 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User, { UserDocument } from "../Models/user.model";
+import User from "../Models/user.model";
 import generateTokens from "../Lib/generateTokens";
 import { storeTokens } from "../Lib/storeTokens";
 import { setCookies } from "../Lib/setCookies";
 import { TokenInterface } from "../Lib/token";
 import { redis } from "../Lib/redis";
+import Otp from "../Models/otp.model";
+import crypto from "crypto";
+import bcrypt from "bcrypt";
+import { emailTemp } from "../Lib/emailTemp";
+import mongoose from "mongoose";
+import transporter from "../Lib/nodemailer";
 
 class CustomError extends Error {
   code: number;
@@ -210,6 +216,113 @@ export const LogOut = async (req: Request, res: Response) => {
     return res.status(500).json({
       message: "Some internal server error occurred",
       error: (error as Error).message,
+    });
+  }
+};
+
+export const ForgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    const userFound = await User.findOne({ email });
+
+    if (!userFound) {
+      throw new CustomError("Invalid Email Id", 404);
+    }
+
+    await Otp.deleteMany({
+      userId: userFound._id,
+      purpose: "password-reset",
+    });
+
+    const RandomOtp = crypto.randomInt(1000, 10000);
+    const salt = await bcrypt.genSalt(4);
+    const hashedOtp = await bcrypt.hash(RandomOtp.toString(), salt);
+
+    const otp = await Otp.create({
+      otpHash: hashedOtp,
+      userId: userFound._id,
+      purpose: "password-reset",
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+    });
+
+    const html = emailTemp(userFound.fullName, RandomOtp, email);
+    let info;
+    try {
+      info = await transporter.sendMail({
+        from: process.env.GMAIL_ID,
+        to: email,
+        subject: "OTP for Email Confirmation From NeuroNST",
+        html: html,
+      });
+    } catch (error) {
+      await Otp.findByIdAndDelete(otp._id);
+      throw error;
+    }
+
+    return res.json({
+      message: "Email sent Successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status((error as CustomError).code || 500).json({
+      message: (error as CustomError).message || "Internal Server error",
+      success: false,
+    });
+  }
+};
+
+export const VerifyOTP = async (req: Request, res: Response) => {
+  try {
+    const { email, otp } = req.body;
+    const user = await User.findOne({ email });
+
+    const OtpCode = await Otp.findOne({
+      userId: user?._id,
+      purpose: "password-reset",
+    });
+
+    if (!OtpCode) {
+      throw new CustomError("Otp has expired", 400);
+    }
+
+    const verify = await bcrypt.compare(otp.toString(), OtpCode.otpHash);
+    if (!verify) {
+      throw new CustomError("Otp is Incorrect", 400);
+    }
+
+    await Otp.findByIdAndDelete(OtpCode._id);
+
+    const ResetTokenSecret = process.env.JWT_RESET_TOKEN;
+
+    if (!ResetTokenSecret) {
+      throw new CustomError("Some error occurred", 400);
+    }
+
+    const resetToken = jwt.sign(
+      {
+        userId: user?._id,
+        purpose: "password-reset",
+      },
+      ResetTokenSecret
+    );
+
+    res.cookie("resetToken", resetToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.json({
+      success: true,
+      redirect: "/changePassword",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status((error as CustomError).code || 500).json({
+      message: (error as CustomError).message || "Server error",
+      success: false,
     });
   }
 };
