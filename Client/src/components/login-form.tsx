@@ -18,6 +18,7 @@ import { useState } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "./ui/Loader";
+import { Link } from "react-router-dom";
 
 export function LoginForm({
   className,
@@ -131,12 +132,12 @@ export function LoginForm({
                 <div className="grid gap-3">
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
-                    <a
-                      href="#"
+                    <Link
+                      to="/forgotpass"
                       className="ml-auto text-sm underline-offset-4 hover:underline"
                     >
                       Forgot your password?
-                    </a>
+                    </Link>
                   </div>
                   <Password
                     onChange={(e) => {
@@ -150,7 +151,11 @@ export function LoginForm({
                     </p>
                   )}
                 </div>
-                <Button type="submit" className="w-full">
+                <Button
+                  disabled={loading}
+                  type="submit"
+                  className={`w-full ${loading && "cursor-not-allowed"}`}
+                >
                   {loading ? <Loader /> : "Sign In"}
                 </Button>
               </div>
