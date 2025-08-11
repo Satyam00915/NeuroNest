@@ -1,5 +1,6 @@
 import { Response, Router } from "express";
 import {
+  ChangePassword,
   ForgotPassword,
   LogOut,
   RefreshToken,
@@ -8,6 +9,7 @@ import {
   VerifyOTP,
 } from "../Controllers/user.controller";
 import authCheck, { AuthenticatedRequest } from "../Middleware/auth.middleware";
+import { checkResetToken } from "../Middleware/checkUser";
 
 const userRouter = Router();
 
@@ -25,5 +27,7 @@ userRouter.get("/logout", LogOut);
 
 userRouter.post("/forgotPass", ForgotPassword);
 userRouter.post("/verify", VerifyOTP);
+
+userRouter.post("/changePass", checkResetToken, ChangePassword);
 
 export default userRouter;

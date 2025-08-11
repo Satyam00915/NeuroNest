@@ -12,6 +12,7 @@ import bcrypt from "bcrypt";
 import { emailTemp } from "../Lib/emailTemp";
 import mongoose from "mongoose";
 import transporter from "../Lib/nodemailer";
+import { AuthenticatedRequest } from "../Middleware/auth.middleware";
 
 class CustomError extends Error {
   code: number;
@@ -311,7 +312,7 @@ export const VerifyOTP = async (req: Request, res: Response) => {
     res.cookie("resetToken", resetToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
     });
 
     res.json({
@@ -322,6 +323,32 @@ export const VerifyOTP = async (req: Request, res: Response) => {
     console.log(error);
     return res.status((error as CustomError).code || 500).json({
       message: (error as CustomError).message || "Server error",
+      success: false,
+    });
+  }
+};
+
+export const ChangePassword = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const { password } = req.body;
+    const user = req.user;
+
+    await User.findByIdAndUpdate(user?._id, {
+      password,
+    });
+
+    return res.status(200).json({
+      message: "Password has been changed.",
+      success: true,
+      redirect: "/login",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error",
       success: false,
     });
   }
