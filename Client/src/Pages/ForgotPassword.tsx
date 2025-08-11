@@ -72,6 +72,7 @@ const ForgotPassword = () => {
           otp: value,
         },
         {
+          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
