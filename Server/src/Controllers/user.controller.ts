@@ -10,7 +10,6 @@ import Otp from "../Models/otp.model";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
 import { emailTemp } from "../Lib/emailTemp";
-import mongoose from "mongoose";
 import transporter from "../Lib/nodemailer";
 import { AuthenticatedRequest } from "../Middleware/auth.middleware";
 
@@ -336,9 +335,8 @@ export const ChangePassword = async (
     const { password } = req.body;
     const user = req.user;
 
-    await User.findByIdAndUpdate(user?._id, {
-      password,
-    });
+    user!.password = password;
+    await user?.save();
 
     return res.status(200).json({
       message: "Password has been changed.",
