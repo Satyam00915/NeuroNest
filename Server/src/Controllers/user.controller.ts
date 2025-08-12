@@ -150,12 +150,12 @@ export const RefreshToken = async (req: Request, res: Response) => {
   } catch (error) {
     res.clearCookie("accesstoken", {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "none",
       secure: process.env.NODE_ENV === "production",
     });
     res.clearCookie("refreshtoken", {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "none",
       secure: process.env.NODE_ENV === "production",
     });
 
@@ -342,6 +342,34 @@ export const ChangePassword = async (
       message: "Password has been changed.",
       success: true,
       redirect: "/login",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error",
+      success: false,
+    });
+  }
+};
+
+export const FetchUser = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "No user exists",
+        success: false,
+      });
+    }
+    const { _id, fullName, email, username } = req.user;
+
+    res.json({
+      user: {
+        _id,
+        fullName,
+        email,
+        username,
+      },
+      success: true,
     });
   } catch (error) {
     console.log(error);
