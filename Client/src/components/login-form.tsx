@@ -18,7 +18,8 @@ import { useState } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "./ui/Loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/authStore";
 
 export function LoginForm({
   className,
@@ -27,6 +28,10 @@ export function LoginForm({
   const updateUserDetails = useUserStore((state) => state.updateUserDetails);
   const userDetails = useUserStore((state) => state.userDetails);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const { setUser } = useAuthStore.getState();
   const {
     register,
     handleSubmit,
@@ -55,7 +60,9 @@ export function LoginForm({
         const response = res.data;
         if (response.success) {
           setLoading(false);
+          setUser(response.user);
           toast.success(response.message);
+          navigate("/dashboard");
         }
       })
       .catch((err) => {

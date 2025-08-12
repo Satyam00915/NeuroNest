@@ -13,6 +13,7 @@ type State = {
 
 type Action = {
   updateUserDetails: (partial: Partial<UserDetails>) => void;
+  reset: () => void;
 };
 
 export const useUserStore = create<State & Action>((set) => ({
@@ -24,4 +25,14 @@ export const useUserStore = create<State & Action>((set) => ({
   },
   updateUserDetails: (partial) =>
     set((state) => ({ userDetails: { ...state.userDetails, ...partial } })),
+
+  reset: () =>
+    set({
+      userDetails: {
+        fullName: "",
+        username: "",
+        email: "",
+        password: "",
+      },
+    }),
 }));

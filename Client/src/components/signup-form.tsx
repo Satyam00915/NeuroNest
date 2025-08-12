@@ -18,14 +18,20 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import Loader from "./ui/Loader";
+import { useAuthStore } from "@/store/authStore";
+import { useNavigate } from "react-router-dom";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const updateUserDetails = useUserStore((state) => state.updateUserDetails);
+  const { updateUserDetails } = useUserStore.getState();
   const userDetails = useUserStore((state) => state.userDetails);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const { setUser } = useAuthStore.getState();
 
   const {
     register,
@@ -58,8 +64,10 @@ export function SignupForm({
         const response = res.data;
         console.log(response);
         if (response.success) {
+          setUser(response.user);
           setLoading(false);
           toast.success("User Signed Up Successfully!");
+          navigate("/dashboard");
         }
       })
       .catch((err) => {
