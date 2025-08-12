@@ -9,7 +9,7 @@ export async function setCookies(
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "none",
-    maxAge: 15 * 60 * 1000,
+    maxAge: 2 * 60 * 1000,
   });
   res.cookie("refreshtoken", refreshToken, {
     httpOnly: true,
