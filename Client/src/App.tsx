@@ -8,15 +8,15 @@ import ChangePassword from "./Pages/ChangePassword";
 import { ProtectedRoute } from "./lib/ProtectedRoute";
 import Dashboard from "./Pages/Dashboard";
 import { useEffect } from "react";
-import axios from "axios";
 import { useAuthStore } from "./store/authStore";
 import { Another } from "./Pages/Another";
+import api from "./lib/api";
 
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
   const logout = useAuthStore((state) => state.logout);
   useEffect(() => {
-    axios
+    api
       .get("https://neuronest-oevp.onrender.com/api/user/me", {
         withCredentials: true,
         headers: {
