@@ -10,6 +10,7 @@ import Dashboard from "./Pages/Dashboard";
 import { useEffect } from "react";
 import axios from "axios";
 import { useAuthStore } from "./store/authStore";
+import { Another } from "./Pages/Another";
 
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -46,6 +47,7 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/another" element={<Another />} />
           </Route>
         </Routes>
       </ThemeProvider>
