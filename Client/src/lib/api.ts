@@ -60,6 +60,8 @@ api.interceptors.response.use(
         isRefreshing = false;
         refreshSubscribers = [];
 
+        window.location.href = "/login";
+
         return Promise.reject(error);
       }
     }
