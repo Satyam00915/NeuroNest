@@ -16,6 +16,11 @@ function App() {
   const setUser = useAuthStore((state) => state.setUser);
   const logout = useAuthStore((state) => state.logout);
   useEffect(() => {
+    const authPages = ["/login", "/signup", "/forgotPass", "/changePassword"];
+    if (authPages.some((path) => window.location.pathname.startsWith(path))) {
+      return;
+    }
+
     api
       .get("https://neuronest-oevp.onrender.com/api/user/me", {
         withCredentials: true,
