@@ -247,12 +247,7 @@ const Layout = () => {
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center">
               <User className="w-4 h-4 text-primary-foreground" />
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{user?.fullName}</p>
-              <p className="text-xs text-muted-foreground truncate">
-                {user?.email}
-              </p>
-            </div>
+
             <Menu className="w-4 h-4 text-muted-foreground" />
           </div>
         </div>
