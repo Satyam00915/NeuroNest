@@ -194,14 +194,15 @@ export const LogOut = async (req: Request, res: Response) => {
     if (!user) {
       throw new CustomError("User not found", 401);
     }
+
     res.clearCookie("accesstoken", {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "none",
       secure: process.env.NODE_ENV === "production",
     });
     res.clearCookie("refreshtoken", {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "none",
       secure: process.env.NODE_ENV === "production",
     });
 
