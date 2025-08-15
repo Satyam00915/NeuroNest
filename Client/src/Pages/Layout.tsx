@@ -17,8 +17,42 @@ import {
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { useAuthStore } from "@/store/authStore";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useState } from "react";
+import Loader from "@/components/ui/Loader";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Layout = () => {
+  const [loading, setLoading] = useState(false);
+
+  function LogOut() {
+    setLoading(true);
+    axios
+      .get("https://neuronest-oevp.onrender.com/api/user/logout", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        const response = res.data;
+        if (response.success) {
+          toast.success(response.message);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
   const { theme } = useTheme();
   const setSidebar = useSidebarStore((state) => state.setSidebar);
   const user = useAuthStore((state) => state.user);
@@ -242,20 +276,35 @@ const Layout = () => {
         </div>
 
         {/* User Profile */}
-        <div className="p-4 border-t border-border/50">
-          <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors cursor-pointer">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center">
-              <User className="w-4 h-4 text-primary-foreground" />
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <div className="p-4 border-t border-border/50">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors cursor-pointer">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center">
+                  <User className="w-4 h-4 text-primary-foreground" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">
+                    {user?.fullName}
+                  </p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {user?.email}
+                  </p>
+                </div>
+
+                <Menu className="w-4 h-4 text-muted-foreground" />
+
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>{user?.fullName}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={LogOut}>
+                    {loading ? <Loader /> : "Log Out"}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{user?.fullName}</p>
-              <p className="text-xs text-muted-foreground truncate">
-                {user?.email}
-              </p>
-            </div>
-            <Menu className="w-4 h-4 text-muted-foreground" />
-          </div>
-        </div>
+          </DropdownMenuTrigger>
+        </DropdownMenu>
       </div>
 
       {/* Main Content */}
