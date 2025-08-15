@@ -62,7 +62,7 @@ export function LoginForm({
           setLoading(false);
           setUser(response.user);
           toast.success(response.message);
-          navigate("/dashboard");
+          navigate("/main/dashboard");
         }
       })
       .catch((err) => {

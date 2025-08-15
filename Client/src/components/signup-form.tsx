@@ -67,7 +67,7 @@ export function SignupForm({
           setUser(response.user);
           setLoading(false);
           toast.success("User Signed Up Successfully!");
-          navigate("/dashboard");
+          navigate("/main/dashboard");
         }
       })
       .catch((err) => {
