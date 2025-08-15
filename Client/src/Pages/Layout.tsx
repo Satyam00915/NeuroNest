@@ -299,10 +299,8 @@ const Layout = () => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>{user?.fullName}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Button className="w-full h-full" onClick={LogOut}>
-                      {loading ? <Loader /> : "Log Out"}
-                    </Button>
+                  <DropdownMenuItem className="cursor-pointer" onClick={LogOut}>
+                    {loading ? <Loader /> : "Log Out"}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </div>
