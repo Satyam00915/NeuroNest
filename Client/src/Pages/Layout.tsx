@@ -297,8 +297,10 @@ const Layout = () => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>{user?.fullName}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={LogOut}>
-                    {loading ? <Loader /> : "Log Out"}
+                  <DropdownMenuItem>
+                    <button onClick={LogOut}>
+                      {loading ? <Loader /> : "Log Out"}
+                    </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </div>
