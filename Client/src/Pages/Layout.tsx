@@ -32,6 +32,7 @@ import toast from "react-hot-toast";
 
 const Layout = () => {
   const [loading, setLoading] = useState(false);
+  const logOut = useAuthStore((state) => state.logout);
 
   function LogOut() {
     setLoading(true);
@@ -43,6 +44,7 @@ const Layout = () => {
         const response = res.data;
         if (response.success) {
           toast.success(response.message);
+          logOut();
         }
       })
       .catch((err) => {
