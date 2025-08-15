@@ -52,12 +52,12 @@ function App() {
 
           <Route path="/changePassword" element={<ChangePassword />} />
 
-          <Route element={<ProtectedRoute />}>
             <Route path="/main" element={<Layout />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="notes" element={<Notes />} />
               <Route path="reminders" element={<Reminders />} />
             </Route>
+          <Route element={<ProtectedRoute />}>
           </Route>
         </Routes>
       </ThemeProvider>

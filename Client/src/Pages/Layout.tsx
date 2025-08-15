@@ -300,9 +300,9 @@ const Layout = () => {
                   <DropdownMenuLabel>{user?.fullName}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <button onClick={LogOut}>
+                    <Button className="w-full h-full" onClick={LogOut}>
                       {loading ? <Loader /> : "Log Out"}
-                    </button>
+                    </Button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </div>
