@@ -6,11 +6,13 @@ import SignUp from "./Pages/SignUp";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ChangePassword from "./Pages/ChangePassword";
 import { ProtectedRoute } from "./lib/ProtectedRoute";
-import Dashboard from "./Pages/Dashboard";
 import { useEffect } from "react";
 import { useAuthStore } from "./store/authStore";
-import { Another } from "./Pages/Another";
 import api from "./lib/api";
+import Layout from "./Pages/Layout";
+import { Dashboard } from "./Pages/Dashboard";
+import { Notes } from "./Pages/Notes";
+import Reminders from "./Pages/Reminders";
 
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -51,8 +53,11 @@ function App() {
           <Route path="/changePassword" element={<ChangePassword />} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/another" element={<Another />} />
+            <Route path="/main" element={<Layout />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="notes" element={<Notes />} />
+              <Route path="reminders" element={<Reminders />} />
+            </Route>
           </Route>
         </Routes>
       </ThemeProvider>

@@ -1,14 +1,3 @@
-import { Link } from "react-router-dom";
-
-const Dashboard = () => {
-  return (
-    <div>
-      Dashboard
-      <div>
-        <Link to={"/another"}>Another</Link>
-      </div>
-    </div>
-  );
+export const Dashboard = () => {
+  return <div>Dashboard</div>;
 };
-
-export default Dashboard;
