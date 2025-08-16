@@ -8,6 +8,7 @@ import {
   SignIn,
   SignUp,
   VerifyOTP,
+  verifyUser,
 } from "../Controllers/user.controller";
 import authCheck, { AuthenticatedRequest } from "../Middleware/auth.middleware";
 import { checkResetToken } from "../Middleware/checkUser";
@@ -31,5 +32,7 @@ userRouter.post("/verify", VerifyOTP);
 
 userRouter.post("/changePass", checkResetToken, ChangePassword);
 userRouter.get("/me", authCheck, FetchUser);
+
+userRouter.get("/verify", verifyUser);
 
 export default userRouter;

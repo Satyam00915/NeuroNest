@@ -404,3 +404,50 @@ export const FetchUser = async (req: AuthenticatedRequest, res: Response) => {
     });
   }
 };
+
+export const verifyUser = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { token, email } = req.params;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new CustomError("No User Found", 401);
+    }
+
+    if (user.isVerified) {
+      return res.json({
+        message: "You are already verified",
+        redirect: "/login",
+      });
+    }
+
+    if (user.tokenExpiry && user.tokenExpiry < new Date()) {
+      throw new CustomError("Token Expired", 404);
+    }
+
+    if (!user.verifyToken) {
+      throw new CustomError("No token exists", 404);
+    }
+
+    const result = await bcrypt.compare(token, user?.verifyToken);
+    if (!result) {
+      throw new CustomError("Token Invalid", 400);
+    }
+
+    user.verifyToken = undefined;
+    user.tokenExpiry = undefined;
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Token is valid",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status((error as CustomError).code || 500).json({
+      message: (error as CustomError).message || "Server error",
+      success: false,
+    });
+  }
+};

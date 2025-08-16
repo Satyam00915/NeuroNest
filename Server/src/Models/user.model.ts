@@ -8,8 +8,8 @@ export interface UserDocument extends Document {
   email: string;
   password: string;
   isVerified: boolean;
-  verifyToken: string;
-  tokenExpiry: Date;
+  verifyToken?: string;
+  tokenExpiry?: Date;
   comparePassword(password: string): Promise<boolean>;
 }
 
