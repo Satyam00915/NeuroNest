@@ -36,7 +36,7 @@ export const SignUp = async (req: Request, res: Response) => {
     }
 
     const rawToken = crypto.randomBytes(32).toString("hex");
-    const hashToken = bcrypt.hash(rawToken, 10);
+    const hashToken = await bcrypt.hash(rawToken, 10);
 
     const user = await User.create({
       fullName,
