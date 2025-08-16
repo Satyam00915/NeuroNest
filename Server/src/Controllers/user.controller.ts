@@ -409,6 +409,10 @@ export const verifyUser = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { token, email } = req.query;
 
+    if (!token) {
+      throw new CustomError("Invalid link. Please request again.", 400);
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       throw new CustomError("No User Found", 401);
@@ -429,7 +433,7 @@ export const verifyUser = async (req: AuthenticatedRequest, res: Response) => {
       throw new CustomError("No token exists", 404);
     }
 
-    const result = await bcrypt.compare(token, user.verifyToken);
+    const result = await bcrypt.compare(token.toString(), user.verifyToken);
     if (!result) {
       throw new CustomError("Token Invalid", 400);
     }
