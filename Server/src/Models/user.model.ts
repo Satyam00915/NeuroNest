@@ -41,11 +41,9 @@ const userSchema = new mongoose.Schema<UserDocument>(
     },
     verifyToken: {
       type: String,
-      required: true,
     },
     tokenExpiry: {
       type: Date,
-      required: true,
     },
   },
   {
