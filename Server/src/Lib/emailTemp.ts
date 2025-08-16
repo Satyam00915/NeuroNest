@@ -56,3 +56,56 @@ export const emailTemp = (name: String, otp: number, email: string) => {
           </tr>
         </table>`;
 };
+
+
+export const verifyLink = (name: string, link: string) => {
+  return `
+  <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Inter, Arial, sans-serif; background:#f6f8fb; padding:20px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.06);">
+          
+          <!-- Header -->
+          <tr>
+            <td style="padding:18px 24px; background:#3b82f6; color:#fff;">
+              <h1 style="margin:0; font-size:18px; font-weight:600;">NeuroNST</h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:26px;">
+              <p style="margin:0 0 12px 0; font-size:16px; color:#111;">
+                Hi <strong>${name}</strong>,
+              </p>
+
+              <p style="margin:0 0 18px 0; font-size:14px; color:#444; line-height:1.5;">
+                Click the button below to continue:
+              </p>
+
+              <!-- CTA Button -->
+              <div style="text-align:center; margin:24px 0;">
+                <a href="${link}" style="background:#3b82f6; color:#fff; padding:12px 22px; font-size:15px; text-decoration:none; border-radius:6px; display:inline-block;">
+                  Continue
+                </a>
+              </div>
+
+              <p style="margin:0; font-size:12px; color:#777;">
+                If you didn’t request this, just ignore this email.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:16px; background:#f8fafc; text-align:center;">
+              <small style="color:#999; font-size:12px;">© NeuroNST — All rights reserved</small>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+  `;
+};

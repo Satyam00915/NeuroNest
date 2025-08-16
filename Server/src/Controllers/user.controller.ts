@@ -9,7 +9,7 @@ import { redis } from "../Lib/redis";
 import Otp from "../Models/otp.model";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
-import { emailTemp } from "../Lib/emailTemp";
+import { emailTemp, verifyLink } from "../Lib/emailTemp";
 import transporter from "../Lib/nodemailer";
 import { AuthenticatedRequest } from "../Middleware/auth.middleware";
 
@@ -35,12 +35,36 @@ export const SignUp = async (req: Request, res: Response) => {
       });
     }
 
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const hashToken = bcrypt.hash(rawToken, 10);
+
     const user = await User.create({
       fullName,
       email,
       username,
       password,
+      verifyToken: hashToken,
+      tokenExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000),
     });
+
+    //Send Verification Email
+
+    const html = verifyLink(
+      fullName,
+      `${process.env.BACKEND_URL}/api/user/verify?token=${rawToken}&email=${email}`
+    );
+    let info;
+
+    try {
+      info = await transporter.sendMail({
+        from: process.env.GMAIL_ID,
+        to: email,
+        subject: "Verification Link From NeuroNST",
+        html: html,
+      });
+    } catch (error) {
+      throw new CustomError("Verification Email Sending Failed", 400);
+    }
 
     //Authenticate
 
@@ -56,7 +80,7 @@ export const SignUp = async (req: Request, res: Response) => {
         email,
         username,
       },
-      message: "User created successfully",
+      message: "Signup Successfull , Check your email for verification",
       success: true,
     });
   } catch (error) {
