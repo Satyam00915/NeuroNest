@@ -295,25 +295,24 @@ const Layout = () => {
                 </div>
 
                 <Menu className="w-4 h-4 text-muted-foreground" />
-
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>{user?.fullName}</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <button
-                      disabled={loading}
-                      className={`w-full h-full ${
-                        loading && "cursor-not-allowed"
-                      } cursor-pointer`}
-                      onClick={LogOut}
-                    >
-                      {loading ? <Loader /> : "Log Out"}
-                    </button>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
               </div>
             </div>
           </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>{user?.fullName}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <button
+                disabled={loading}
+                className={`w-full h-full ${
+                  loading && "cursor-not-allowed"
+                } cursor-pointer`}
+                onClick={LogOut}
+              >
+                {loading ? <Loader /> : "Log Out"}
+              </button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
