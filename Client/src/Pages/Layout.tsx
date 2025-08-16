@@ -300,12 +300,15 @@ const Layout = () => {
                   <DropdownMenuLabel>{user?.fullName}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Button
-                      className="w-full h-full cursor-pointer"
+                    <button
+                      disabled={loading}
+                      className={`w-full h-full ${
+                        loading && "cursor-not-allowed"
+                      } cursor-pointer`}
                       onClick={LogOut}
                     >
                       {loading ? <Loader /> : "Log Out"}
-                    </Button>
+                    </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </div>
