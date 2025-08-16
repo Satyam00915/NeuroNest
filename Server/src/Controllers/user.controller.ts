@@ -438,6 +438,7 @@ export const verifyUser = async (req: AuthenticatedRequest, res: Response) => {
       throw new CustomError("Token Invalid", 400);
     }
 
+    user.isVerified = true;
     user.verifyToken = undefined;
     user.tokenExpiry = undefined;
 
