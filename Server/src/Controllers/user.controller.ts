@@ -393,7 +393,7 @@ export const FetchUser = async (req: AuthenticatedRequest, res: Response) => {
         success: false,
       });
     }
-    const { _id, fullName, email, username } = req.user;
+    const { _id, fullName, email, username, avatarUrl } = req.user;
 
     res.json({
       user: {
@@ -401,6 +401,7 @@ export const FetchUser = async (req: AuthenticatedRequest, res: Response) => {
         fullName,
         email,
         username,
+        avatarUrl,
       },
       success: true,
     });
