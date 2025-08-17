@@ -123,6 +123,7 @@ export function SignupForm({
                             avatarUrl: payload.picture,
                           },
                           {
+                            withCredentials: true,
                             headers: {
                               "Content-Type": "application/json",
                             },
