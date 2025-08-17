@@ -468,7 +468,7 @@ export const verifyUser = async (req: AuthenticatedRequest, res: Response) => {
 
 export const googleAuthSignUp = async (req: Request, res: Response) => {
   try {
-    const { fullName, email, avatarUrl, username } = req.body;
+    const { fullName, email, avatarUrl } = req.body;
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({
@@ -482,7 +482,6 @@ export const googleAuthSignUp = async (req: Request, res: Response) => {
       email,
       isVerified: true,
       avatarUrl,
-      username,
       provider: "google",
     });
 
@@ -496,7 +495,6 @@ export const googleAuthSignUp = async (req: Request, res: Response) => {
         _id: user._id,
         fullName,
         email,
-        username,
         avatarUrl,
       },
       message: "Signup Successfull",

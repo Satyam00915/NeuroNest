@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema<UserDocument>(
     },
     username: {
       type: String,
-      required: true,
+      default: "",
       unique: true,
     },
     provider: {
