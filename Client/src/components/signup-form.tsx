@@ -133,7 +133,7 @@ export function SignupForm({
                           if (response.success) {
                             setUser(response.user);
                             setLoading(true);
-                            localStorage.setItem("authStatus", "isSignedUp");
+                            localStorage.setItem("authStatus", "isGoogleSignedUp");
                             navigate("/main/dashboard");
                           }
                         })

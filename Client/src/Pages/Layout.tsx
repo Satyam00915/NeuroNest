@@ -42,6 +42,9 @@ const Layout = () => {
     } else if (authStatus === "isSignedUp") {
       toast.success("Used Signed Up!. Please verify Yourself");
       localStorage.removeItem("authStatus");
+    } else if (authStatus === "isGoogleSignedUp") {
+      toast.success("User Signed Up!");
+      localStorage.removeItem("authStatus");
     }
   }, []);
 
