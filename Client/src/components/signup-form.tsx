@@ -20,7 +20,7 @@ import { useState } from "react";
 import Loader from "./ui/Loader";
 import { useAuthStore } from "@/store/authStore";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/lib/supabase";
+import { GoogleLogin } from "@react-oauth/google";
 
 export function SignupForm({
   className,
@@ -77,31 +77,6 @@ export function SignupForm({
       });
   }
 
-  async function SignUpWithGoogle() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: "https://neuro-nest-d2fn.vercel.app/signup",
-      },
-    });
-
-    console.log("11111");
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-
-    localStorage.setItem("data", JSON.stringify(data));
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (user) {
-      localStorage.setItem("ussrrr", JSON.stringify(user));
-    }
-  }
-
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <div>
@@ -116,7 +91,7 @@ export function SignupForm({
           <form onSubmit={handleSubmit(handleSignUp)}>
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
-                <Button
+                {/* <Button
                   onClick={SignUpWithGoogle}
                   variant="outline"
                   type="button"
@@ -129,7 +104,12 @@ export function SignupForm({
                     />
                   </svg>
                   Signup with Google
-                </Button>
+                </Button> */}
+                <GoogleLogin
+                  onSuccess={(response) => {
+                    console.log(response);
+                  }}
+                />
               </div>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
