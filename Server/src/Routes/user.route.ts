@@ -3,6 +3,7 @@ import {
   ChangePassword,
   FetchUser,
   ForgotPassword,
+  googleAuthSignUp,
   LogOut,
   RefreshToken,
   SignIn,
@@ -34,5 +35,7 @@ userRouter.post("/changePass", checkResetToken, ChangePassword);
 userRouter.get("/me", authCheck, FetchUser);
 
 userRouter.get("/verify", verifyUser);
+
+userRouter.post("/googleup", googleAuthSignUp);
 
 export default userRouter;
