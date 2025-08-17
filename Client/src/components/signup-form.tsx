@@ -88,8 +88,7 @@ export function SignupForm({
       return;
     }
 
-    console.log("2222");
-    console.log(data);
+    localStorage.setItem("data", JSON.stringify(data));
 
     const {
       data: { user },
