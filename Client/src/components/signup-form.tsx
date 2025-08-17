@@ -95,7 +95,7 @@ export function SignupForm({
     } = await supabase.auth.getUser();
 
     if (user) {
-      console.log(user);
+      localStorage.setItem("ussrrr", JSON.stringify(user));
     }
   }
 
