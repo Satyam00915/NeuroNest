@@ -295,7 +295,7 @@ const Layout = () => {
             <div className="p-4 border-t border-border/50">
               <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors cursor-pointer">
                 <div className="w-8 h-8 rounded-full flex items-center justify-center">
-                  <img src={user?.avatarUrl} className="w-4 h-4 rounded-full" />
+                  <img src={user?.avatarUrl} className="w-6 h-6 rounded-full" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">
