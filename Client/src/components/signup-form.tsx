@@ -82,11 +82,13 @@ export function SignupForm({
       provider: "google",
     });
 
+    console.log("11111");
     if (error) {
       toast.error(error.message);
       return;
     }
 
+    console.log("2222");
     console.log(data);
 
     const {
