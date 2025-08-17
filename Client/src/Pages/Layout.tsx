@@ -38,8 +38,10 @@ const Layout = () => {
     const authStatus = localStorage.getItem("authStatus");
     if (authStatus === "isLoggedIn") {
       toast.success("User Logged In!");
+      localStorage.removeItem("authStatus");
     } else if (authStatus === "isSignedUp") {
       toast.success("Used Signed Up!. Please verify Yourself");
+      localStorage.removeItem("authStatus");
     }
   }, []);
 
