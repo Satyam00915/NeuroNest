@@ -1,15 +1,19 @@
 import mongoose, { Document, Types } from "mongoose";
 import bcrypt from "bcrypt";
 
+const SocialAuth = ["google", "email"];
+
 export interface UserDocument extends Document {
   _id: Types.ObjectId;
   fullName: string;
   username: string;
   email: string;
-  password: string;
+  password?: string;
+  provider: string;
   isVerified: boolean;
   verifyToken?: string;
   tokenExpiry?: Date;
+  avatarUrl?: String;
   comparePassword(password: string): Promise<boolean>;
 }
 
@@ -24,6 +28,11 @@ const userSchema = new mongoose.Schema<UserDocument>(
       required: true,
       unique: true,
     },
+    provider: {
+      type: String,
+      enum: SocialAuth,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -32,7 +41,7 @@ const userSchema = new mongoose.Schema<UserDocument>(
     },
     password: {
       type: String,
-      required: true,
+      default: "",
       min: [6, "Password must be of minimum 6 Characters"],
     },
     isVerified: {
@@ -45,6 +54,10 @@ const userSchema = new mongoose.Schema<UserDocument>(
     tokenExpiry: {
       type: Date,
     },
+    avatarUrl: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,
@@ -52,7 +65,7 @@ const userSchema = new mongoose.Schema<UserDocument>(
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
+  if (!this.password || !this.isModified("password")) {
     return next();
   }
 

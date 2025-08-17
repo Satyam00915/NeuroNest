@@ -42,6 +42,7 @@ export const SignUp = async (req: Request, res: Response) => {
       fullName,
       email,
       username,
+      provider: "email",
       password,
       verifyToken: hashToken,
       tokenExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000),
@@ -102,6 +103,13 @@ export const SignIn = async (req: Request, res: Response) => {
       return res.status(401).json({
         message: "Invalid email or password",
         success: false,
+      });
+    }
+
+    if (userExists.provider !== "email") {
+      return res.status(403).json({
+        success: false,
+        message: "Please Signin using your google account",
       });
     }
 
@@ -452,6 +460,51 @@ export const verifyUser = async (req: AuthenticatedRequest, res: Response) => {
     console.log(error);
     return res.status((error as CustomError).code || 500).json({
       message: (error as CustomError).message || "Server error",
+      success: false,
+    });
+  }
+};
+
+export const googleAuthSignUp = async (req: Request, res: Response) => {
+  try {
+    const { fullName, email, avatarUrl, username } = req.body;
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({
+        message: "Please LogIn",
+        success: false,
+      });
+    }
+
+    const user = await User.create({
+      fullName,
+      email,
+      isVerified: true,
+      avatarUrl,
+      username,
+      provider: "google",
+    });
+
+    const { accessToken, refreshToken } = generateTokens(user._id);
+    await storeTokens(user._id, refreshToken);
+
+    setCookies(res, accessToken, refreshToken);
+
+    res.status(201).json({
+      user: {
+        _id: user._id,
+        fullName,
+        email,
+        username,
+      },
+      message: "Signup Successfull , Check your email for verification",
+      success: true,
+    });
+  } catch (error) {
+    console.error(`Error occurred!`, error);
+    return res.status(500).json({
+      message: "Some error occurred",
+      error: (error as Error).message,
       success: false,
     });
   }

@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://neuro-nest-d2fn.vercel.app",
+    origin: "https://neuronest-oevp.onrender.com",
     credentials: true,
   })
 );
