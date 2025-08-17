@@ -108,6 +108,12 @@ export function SignupForm({
                 <GoogleLogin
                   onSuccess={(response) => {
                     console.log(response);
+                    if (response.credential) {
+                      const payload = JSON.parse(
+                        atob(response.credential.split(".")[1])
+                      );
+                      console.log(payload);
+                    }
                   }}
                 />
               </div>
