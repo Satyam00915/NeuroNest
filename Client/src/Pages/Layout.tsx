@@ -25,14 +25,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "@/components/ui/Loader";
 import axios from "axios";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const Layout = () => {
   const [loading, setLoading] = useState(false);
   const logOut = useAuthStore((state) => state.logout);
+
+  useEffect(() => {
+    const authStatus = localStorage.getItem("authStatus");
+    if (authStatus === "isLoggedIn") {
+      toast.success("User Logged In!");
+    } else if (authStatus === "isSignedUp") {
+      toast.success("Used Signed Up!. Please verify Yourself");
+    }
+  }, []);
 
   function LogOut() {
     setLoading(true);
@@ -72,6 +81,7 @@ const Layout = () => {
 
   return (
     <div className="flex h-screen bg-background">
+      <Toaster />
       {/* Mobile Sidebar Trigger */}
       <div className="md:hidden fixed top-4 left-4 z-40">
         <Sheet>

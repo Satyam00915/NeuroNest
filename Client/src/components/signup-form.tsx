@@ -66,7 +66,7 @@ export function SignupForm({
         if (response.success) {
           setUser(response.user);
           setLoading(false);
-          toast.success("User Signed Up Successfully!");
+          localStorage.setItem("authStatus", "isSignedUp");
           navigate("/main/dashboard");
         }
       })
