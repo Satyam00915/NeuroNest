@@ -80,6 +80,9 @@ export function SignupForm({
   async function SignUpWithGoogle() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: "https://neuro-nest-d2fn.vercel.app/signup",
+      },
     });
 
     console.log("11111");
