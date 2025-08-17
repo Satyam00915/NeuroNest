@@ -496,8 +496,9 @@ export const googleAuthSignUp = async (req: Request, res: Response) => {
         fullName,
         email,
         username,
+        avatarUrl,
       },
-      message: "Signup Successfull , Check your email for verification",
+      message: "Signup Successfull",
       success: true,
     });
   } catch (error) {
