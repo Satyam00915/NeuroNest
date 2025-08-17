@@ -21,7 +21,6 @@ import Loader from "./ui/Loader";
 import { useAuthStore } from "@/store/authStore";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
-import type { AuthError } from "@supabase/supabase-js";
 
 export function SignupForm({
   className,
@@ -87,6 +86,8 @@ export function SignupForm({
       toast.error(error.message);
       return;
     }
+
+    console.log(data);
 
     const {
       data: { user },
