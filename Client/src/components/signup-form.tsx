@@ -106,13 +106,41 @@ export function SignupForm({
                   Signup with Google
                 </Button> */}
                 <GoogleLogin
-                  onSuccess={(response) => {
-                    console.log(response);
+                  text="signup_with"
+                  onSuccess={async (response) => {
+                    setLoading(false);
                     if (response.credential) {
                       const payload = JSON.parse(
                         atob(response.credential.split(".")[1])
                       );
-                      console.log(payload);
+                      await axios
+                        .post(
+                          "https://neuronest-oevp.onrender.com",
+                          {
+                            fullName: payload.name,
+                            email: payload.email,
+                            username: payload.name,
+                            avatarUrl: payload.picture,
+                          },
+                          {
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                          }
+                        )
+                        .then((res) => {
+                          const response = res.data;
+                          if (response.success) {
+                            setUser(response.user);
+                            setLoading(true);
+                            localStorage.setItem("authStatus", "isSignedUp");
+                            navigate("/main/dashboard");
+                          }
+                        })
+                        .catch((err) => {
+                          setLoading(false);
+                          toast.error(err.response.data.message);
+                        });
                     }
                   }}
                 />
