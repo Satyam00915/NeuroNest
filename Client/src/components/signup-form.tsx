@@ -115,7 +115,7 @@ export function SignupForm({
                       );
                       await axios
                         .post(
-                          "https://neuronest-oevp.onrender.com",
+                          "https://neuronest-oevp.onrender.com/api/user/googleup",
                           {
                             fullName: payload.name,
                             email: payload.email,
