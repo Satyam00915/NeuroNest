@@ -119,7 +119,6 @@ export function SignupForm({
                           {
                             fullName: payload.name,
                             email: payload.email,
-                            username: payload.name,
                             avatarUrl: payload.picture,
                           },
                           {
