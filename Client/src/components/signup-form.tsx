@@ -14,13 +14,17 @@ import { useUserStore } from "@/store/userStore";
 import { useForm } from "react-hook-form";
 import { userSchema, type UserFormData } from "@/schema/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import Loader from "./ui/Loader";
 import { useAuthStore } from "@/store/authStore";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
+import {
+  GoogleLogin,
+  useGoogleLogin,
+  type TokenResponse,
+} from "@react-oauth/google";
 
 export function SignupForm({
   className,
@@ -77,6 +81,56 @@ export function SignupForm({
       });
   }
 
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse: TokenResponse) => {
+      setLoading(true);
+      try {
+        // Use the access token to get user info from Google's API
+        const userInfo = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+            },
+          }
+        );
+
+        // Now send this data to your backend
+        await axios
+          .post(
+            "https://neuronest-oevp.onrender.com/api/user/googleup",
+            {
+              fullName: userInfo.data.name,
+              email: userInfo.data.email,
+              avatarUrl: userInfo.data.picture,
+            },
+            {
+              withCredentials: true,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((res) => {
+            const response = res.data;
+            if (response.success) {
+              setUser(response.user);
+              setLoading(false);
+              localStorage.setItem("authStatus", "isGoogleSignedUp");
+              navigate("/main/dashboard");
+            }
+          });
+      } catch (err) {
+        setLoading(false);
+        console.log(err);
+        toast.error("Google login Failed");
+      }
+    },
+    onError: () => {
+      toast.error("Google Sign-In failed");
+    },
+  });
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <div>
@@ -91,8 +145,10 @@ export function SignupForm({
           <form onSubmit={handleSubmit(handleSignUp)}>
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
-                {/* <Button
-                  onClick={SignUpWithGoogle}
+                <Button
+                  onClick={() => {
+                    googleLogin();
+                  }}
                   variant="outline"
                   type="button"
                   className="w-full"
@@ -104,8 +160,8 @@ export function SignupForm({
                     />
                   </svg>
                   Signup with Google
-                </Button> */}
-                <GoogleLogin
+                </Button>
+                {/* <GoogleLogin
                   text="signup_with"
                   onSuccess={async (response) => {
                     setLoading(false);
@@ -133,7 +189,10 @@ export function SignupForm({
                           if (response.success) {
                             setUser(response.user);
                             setLoading(true);
-                            localStorage.setItem("authStatus", "isGoogleSignedUp");
+                            localStorage.setItem(
+                              "authStatus",
+                              "isGoogleSignedUp"
+                            );
                             navigate("/main/dashboard");
                           }
                         })
@@ -143,7 +202,7 @@ export function SignupForm({
                         });
                     }
                   }}
-                />
+                /> */}
               </div>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
