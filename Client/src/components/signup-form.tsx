@@ -96,6 +96,7 @@ export function SignupForm({
           .post(
             "https://neuronest-oevp.onrender.com/api/user/googleup",
             {
+              googleId: userInfo.data.sub,
               fullName: userInfo.data.name,
               email: userInfo.data.email,
               avatarUrl: userInfo.data.picture,
@@ -147,7 +148,8 @@ export function SignupForm({
                   }}
                   variant="outline"
                   type="button"
-                  className="w-full"
+                  className={`w-full ${loading && "cursor-not-allowed"}`}
+                  disabled={loading}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -155,50 +157,8 @@ export function SignupForm({
                       fill="currentColor"
                     />
                   </svg>
-                  Signup with Google
+                  {loading ? <Loader /> : "Signup with Google"}
                 </Button>
-                {/* <GoogleLogin
-                  text="signup_with"
-                  onSuccess={async (response) => {
-                    setLoading(false);
-                    if (response.credential) {
-                      const payload = JSON.parse(
-                        atob(response.credential.split(".")[1])
-                      );
-                      await axios
-                        .post(
-                          "https://neuronest-oevp.onrender.com/api/user/googleup",
-                          {
-                            fullName: payload.name,
-                            email: payload.email,
-                            avatarUrl: payload.picture,
-                          },
-                          {
-                            withCredentials: true,
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                          }
-                        )
-                        .then((res) => {
-                          const response = res.data;
-                          if (response.success) {
-                            setUser(response.user);
-                            setLoading(true);
-                            localStorage.setItem(
-                              "authStatus",
-                              "isGoogleSignedUp"
-                            );
-                            navigate("/main/dashboard");
-                          }
-                        })
-                        .catch((err) => {
-                          setLoading(false);
-                          toast.error(err.response.data.message);
-                        });
-                    }
-                  }}
-                /> */}
               </div>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
