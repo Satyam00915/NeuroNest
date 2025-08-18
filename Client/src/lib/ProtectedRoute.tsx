@@ -6,7 +6,7 @@ export const ProtectedRoute = () => {
   const { isLoggedIn } = useAuthStore();
   if (isLoggedIn == null)
     return (
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center h-screen w-screen">
         <AdvLoader />
       </div>
     );
