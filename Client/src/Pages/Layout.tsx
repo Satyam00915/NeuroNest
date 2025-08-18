@@ -12,7 +12,6 @@ import {
   Settings,
   ChevronRight,
   Menu,
-  User,
 } from "lucide-react";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { useAuthStore } from "@/store/authStore";
@@ -183,21 +182,43 @@ const Layout = () => {
               </div>
 
               {/* User Profile */}
-              <div className="p-4 border-t border-border/50">
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                  <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center">
-                    <User className="w-4 h-4 text-primary-foreground" />
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <div className="p-4 border-t border-border/50">
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                      <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center">
+                        <img
+                          src={user?.avatarUrl}
+                          className="w-6 h-6 rounded-full"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">
+                          {user?.fullName}
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {user?.email}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">
-                      {user?.fullName}
-                    </p>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {user?.email}
-                    </p>
-                  </div>
-                </div>
-              </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>{user?.fullName}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <button
+                      disabled={loading}
+                      className={`w-full h-full ${
+                        loading && "cursor-not-allowed"
+                      } cursor-pointer`}
+                      onClick={LogOut}
+                    >
+                      {loading ? <Loader /> : "Log Out"}
+                    </button>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </SheetContent>
         </Sheet>
