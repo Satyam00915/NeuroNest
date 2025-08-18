@@ -5,6 +5,7 @@ const SocialAuth = ["google", "email"];
 
 export interface UserDocument extends Document {
   _id: Types.ObjectId;
+  googleId: string;
   fullName: string;
   username: string;
   email: string;
@@ -19,6 +20,10 @@ export interface UserDocument extends Document {
 
 const userSchema = new mongoose.Schema<UserDocument>(
   {
+    googleId: {
+      type: String,
+      unique: true,
+    },
     fullName: {
       type: String,
       required: true,

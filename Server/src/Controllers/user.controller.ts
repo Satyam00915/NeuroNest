@@ -13,6 +13,7 @@ import { emailTemp, verifyLink } from "../Lib/emailTemp";
 import transporter from "../Lib/nodemailer";
 import { AuthenticatedRequest } from "../Middleware/auth.middleware";
 import generateUsername from "../Lib/generateUsername";
+import axios from "axios";
 
 class CustomError extends Error {
   code: number;
@@ -469,8 +470,8 @@ export const verifyUser = async (req: AuthenticatedRequest, res: Response) => {
 
 export const googleAuthSignUp = async (req: Request, res: Response) => {
   try {
-    const { fullName, email, avatarUrl } = req.body;
-    const userExists = await User.findOne({ email });
+    const { fullName, email, avatarUrl, googleId } = req.body;
+    const userExists = await User.findOne({ googleId });
     if (userExists) {
       return res.status(400).json({
         message: "Please LogIn",
@@ -481,6 +482,7 @@ export const googleAuthSignUp = async (req: Request, res: Response) => {
     const username = generateUsername(email);
 
     const user = await User.create({
+      googleId,
       fullName,
       email,
       username,
@@ -510,6 +512,49 @@ export const googleAuthSignUp = async (req: Request, res: Response) => {
     return res.status(500).json({
       message: "Some error occurred",
       error: (error as Error).message,
+      success: false,
+    });
+  }
+};
+
+export const googleAuthSignin = async (req: Request, res: Response) => {
+  try {
+    const { googleAccessToken } = req.body;
+
+    const googleUser = await axios.get(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: { Authorization: `Bearer ${googleAccessToken}` },
+      }
+    );
+    const { sub: googleId, email } = googleUser.data;
+    const findUser = await User.findOne({ googleId });
+    if (!findUser) {
+      return res.status(401).json({
+        message: "Unauthorized User",
+        success: false,
+      });
+    }
+
+    const { accessToken, refreshToken } = generateTokens(findUser._id);
+    await storeTokens(findUser._id, refreshToken);
+
+    setCookies(res, accessToken, refreshToken);
+
+    return res.status(200).json({
+      user: {
+        _id: findUser._id,
+        fullName: findUser.fullName,
+        email: findUser.email,
+        username: findUser.username,
+      },
+      message: "User Logged In",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error",
       success: false,
     });
   }
