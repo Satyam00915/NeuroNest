@@ -14,17 +14,13 @@ import { useUserStore } from "@/store/userStore";
 import { useForm } from "react-hook-form";
 import { userSchema, type UserFormData } from "@/schema/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import Loader from "./ui/Loader";
 import { useAuthStore } from "@/store/authStore";
 import { useNavigate } from "react-router-dom";
-import {
-  GoogleLogin,
-  useGoogleLogin,
-  type TokenResponse,
-} from "@react-oauth/google";
+import { useGoogleLogin, type TokenResponse } from "@react-oauth/google";
 
 export function SignupForm({
   className,
