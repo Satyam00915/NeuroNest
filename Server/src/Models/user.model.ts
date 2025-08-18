@@ -26,7 +26,6 @@ const userSchema = new mongoose.Schema<UserDocument>(
     username: {
       type: String,
       unique: true,
-      sparse: true,
     },
     provider: {
       type: String,

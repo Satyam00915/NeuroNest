@@ -12,6 +12,7 @@ import bcrypt from "bcrypt";
 import { emailTemp, verifyLink } from "../Lib/emailTemp";
 import transporter from "../Lib/nodemailer";
 import { AuthenticatedRequest } from "../Middleware/auth.middleware";
+import generateUsername from "../Lib/generateUsername";
 
 class CustomError extends Error {
   code: number;
@@ -477,9 +478,12 @@ export const googleAuthSignUp = async (req: Request, res: Response) => {
       });
     }
 
+    const username = generateUsername(email);
+
     const user = await User.create({
       fullName,
       email,
+      username,
       isVerified: true,
       avatarUrl,
       provider: "google",
@@ -495,6 +499,7 @@ export const googleAuthSignUp = async (req: Request, res: Response) => {
         _id: user._id,
         fullName,
         email,
+        username,
         avatarUrl,
       },
       message: "Signup Successfull",
