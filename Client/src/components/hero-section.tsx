@@ -193,7 +193,7 @@ const HeroHeader = () => {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row items-center sm:gap-3 sm:space-y-0 md:w-fit">
-                {!isLoggedIn ? (
+                {isLoggedIn ? (
                   <NavLink to={"/main/dashboard"} className="pr-5">
                     Dashboard
                   </NavLink>
