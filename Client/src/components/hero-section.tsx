@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
@@ -12,7 +12,6 @@ import { SiEvernote, SiObsidian } from "react-icons/si";
 import { FaDropbox, FaGoogleDrive, FaSlack, FaTrello } from "react-icons/fa";
 import { SvgComp } from "./ui/SvgComp";
 import { motion } from "framer-motion";
-import { useAuthStore } from "@/store/authStore";
 
 export function HeroSection() {
   return (
@@ -127,7 +126,6 @@ const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   return (
     <header>
       <nav
@@ -193,35 +191,27 @@ const HeroHeader = () => {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row items-center sm:gap-3 sm:space-y-0 md:w-fit">
-                {isLoggedIn ? (
-                  <NavLink to={"/main/dashboard"} className="pr-5">
-                    Dashboard
-                  </NavLink>
-                ) : (
-                  <div className="flex gap-3">
-                    <Button
-                      className="cursor-pointer"
-                      onClick={() => {
-                        navigate("/login");
-                      }}
-                      asChild
-                      variant="outline"
-                      size="sm"
-                    >
-                      <span>Login</span>
-                    </Button>
-                    <Button
-                      className="cursor-pointer"
-                      onClick={() => {
-                        navigate("/signup");
-                      }}
-                      asChild
-                      size="sm"
-                    >
-                      <span>Sign Up</span>
-                    </Button>
-                  </div>
-                )}
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  asChild
+                  variant="outline"
+                  size="sm"
+                >
+                  <span>Login</span>
+                </Button>
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigate("/signup");
+                  }}
+                  asChild
+                  size="sm"
+                >
+                  <span>Sign Up</span>
+                </Button>
                 <ModeToggle />
               </div>
             </div>
