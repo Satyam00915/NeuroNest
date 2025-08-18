@@ -547,6 +547,7 @@ export const googleAuthSignin = async (req: Request, res: Response) => {
         fullName: findUser.fullName,
         email: findUser.email,
         username: findUser.username,
+        avatarUrl: findUser.avatarUrl,
       },
       message: "User Logged In",
       success: true,
