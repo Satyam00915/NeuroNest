@@ -152,7 +152,7 @@ export function SignupForm({
               </div>
               <div className="grid gap-6">
                 <div className="grid gap-3">
-                  <Label htmlFor="fullname">FullName</Label>
+                  <Label htmlFor="fullname">Full Name</Label>
                   <Input
                     {...register("fullName")}
                     id="fullname"
