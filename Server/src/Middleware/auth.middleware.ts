@@ -52,7 +52,7 @@ export default async function authCheck(
     if (error instanceof jwt.TokenExpiredError) {
       return res.status(401).json({
         message: "Token expired",
-        refresh: true,
+        refresh: false,
       });
     }
 

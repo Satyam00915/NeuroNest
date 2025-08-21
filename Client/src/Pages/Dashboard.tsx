@@ -70,7 +70,7 @@ export const Dashboard = () => {
         console.log(err);
         toast.error(err.response.data.message);
       });
-  }, [tags]);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
