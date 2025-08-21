@@ -339,6 +339,24 @@ export const Dashboard = () => {
                         className="h-10 md:h-11 text-sm md:text-base"
                       />
                     </div>
+                    <div className="grid gap-2">
+                      <div className="flex gap-2 flex-wrap">
+                        {tags.map((tag) => (
+                          <div
+                            key={tag._id}
+                            onClick={() => toggleTag(tag.title)}
+                            className={`px-3 py-1 rounded-full cursor-pointer border transition
+                              ${
+                                selectedTags.includes(tag.title)
+                                  ? "bg-purple-600 text-white"
+                                  : "bg-gray-200 text-gray-700"
+                              }`}
+                          >
+                            {tag.title}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </CardContent>
                   <CardFooter className="p-4 md:p-6 pt-0">
                     <Button className="w-full h-10 md:h-11 text-sm md:text-base">
