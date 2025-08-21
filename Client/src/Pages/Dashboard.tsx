@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/select";
 import { AudioUploadDemo, ImageUploadDemo } from "@/components/ui/ImageUpload";
 import { useEffect, useState } from "react";
-import { Tag, TagGroup } from "@/components/ui/tag-group";
+import { Tag } from "@/components/ui/tag-group";
 import api from "@/lib/api";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -226,6 +226,7 @@ export const Dashboard = () => {
                     <div className="grid gap-2">
                       <div className="flex">
                         {tags.map((item) => (
+                          //@ts-expect-error Present
                           <Tag key={item._id}>{item.title}</Tag>
                         ))}
                       </div>
