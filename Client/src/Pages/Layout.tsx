@@ -359,7 +359,7 @@ const Layout = () => {
           <ModeToggle />
         </div>
 
-        <div className="h-[calc(100%-64px)] md:h-full p-4 md:p-8 overflow-auto">
+        <div className="h-[calc(100%-64px)] md:h-full p-4 overflow-hidden">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>
