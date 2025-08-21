@@ -61,7 +61,7 @@ export const Dashboard = () => {
         withCredentials: true,
       })
       .then((res) => {
-        const response = res.data();
+        const response = res.data;
         if (response.success) {
           setTags(response.tags);
         }
