@@ -33,7 +33,6 @@ import {
 } from "@/components/ui/select";
 import { AudioUploadDemo, ImageUploadDemo } from "@/components/ui/ImageUpload";
 import { useEffect, useState } from "react";
-import { Tag, TagGroup, TagList } from "@/components/ui/tag-group";
 import api from "@/lib/api";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -41,6 +40,13 @@ export const Dashboard = () => {
   const [fileType, setFileType] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev: string[]) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
 
   const handleFileTypeChange = (value: string) => {
     setFileType(value);
@@ -226,13 +232,21 @@ export const Dashboard = () => {
                     </div>
 
                     <div className="grid gap-2">
-                      <div className="flex">
-                        <TagGroup label="Select Tags" selectionMode="multiple">
-                          <TagList items={tags}>
-                            {/* @ts-expect-error title is Present */}
-                            {(item) => <Tag>{item.title}</Tag>}
-                          </TagList>
-                        </TagGroup>
+                      <div className="flex gap-2 flex-wrap">
+                        {tags.map((tag) => (
+                          <div
+                            key={tag}
+                            onClick={() => toggleTag(tag)}
+                            className={`px-3 py-1 rounded-full cursor-pointer border transition
+                              ${
+                                selectedTags.includes(tag)
+                                  ? "bg-purple-600 text-white"
+                                  : "bg-gray-200 text-gray-700"
+                              }`}
+                          >
+                            {tag}
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </CardContent>
