@@ -5,6 +5,7 @@ import {
   AddAudio,
   AddImage,
   AddVideo,
+  FetchTags,
 } from "../Controllers/content.controller";
 import { uploadAudio, uploadImage } from "../Lib/multer";
 
@@ -16,6 +17,7 @@ contentRouter.get("/", (req: Request, res: Response) => {
   });
 });
 
+contentRouter.get("/tags", authCheck, FetchTags);
 contentRouter.post("/article", authCheck, AddArticle);
 contentRouter.post("/video", authCheck, AddVideo);
 contentRouter.post("/image", authCheck, uploadImage.single("file"), AddImage);

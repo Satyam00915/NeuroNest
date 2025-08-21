@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import {
   articleSchema,
   audioSchema,
@@ -11,6 +11,7 @@ import { tagUpdater } from "../Lib/taghelper";
 import { dataUri } from "../Lib/multer";
 import cloudinary from "../Lib/cloudinary";
 import { UploadApiResponse } from "cloudinary";
+import Tag from "../Models/tags.model";
 
 class CustomError extends Error {
   code: number;
@@ -268,5 +269,17 @@ export const AddAudio = async (req: AuthenticatedRequest, res: Response) => {
       error,
       message: (error as CustomError).message || "Server error",
     });
+  }
+};
+
+export const FetchTags = async (req: Request, res: Response) => {
+  try {
+    const tags = await Tag.find({});
+    res.json({
+      message: "Tags Fetched",
+      tags,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
