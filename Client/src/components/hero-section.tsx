@@ -125,6 +125,13 @@ const menuItems = [
 const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
   const { theme } = useTheme();
+  const state = localStorage.getItem("auth-storage");
+  let isLoggedIn;
+  if (state) {
+    const auth = JSON.parse(state);
+    isLoggedIn = auth.state.isLoggedIn;
+  }
+  console.log(isLoggedIn);
   const navigate = useNavigate();
   return (
     <header>
@@ -191,27 +198,43 @@ const HeroHeader = () => {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row items-center sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button
-                  className="cursor-pointer"
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                  asChild
-                  variant="outline"
-                  size="sm"
-                >
-                  <span>Login</span>
-                </Button>
-                <Button
-                  className="cursor-pointer"
-                  onClick={() => {
-                    navigate("/signup");
-                  }}
-                  asChild
-                  size="sm"
-                >
-                  <span>Sign Up</span>
-                </Button>
+                {!isLoggedIn ? (
+                  <>
+                    <Button
+                      className="cursor-pointer"
+                      onClick={() => {
+                        navigate("/login");
+                      }}
+                      asChild
+                      variant="outline"
+                      size="sm"
+                    >
+                      <span>Login</span>
+                    </Button>
+                    <Button
+                      className="cursor-pointer"
+                      onClick={() => {
+                        navigate("/signup");
+                      }}
+                      asChild
+                      size="sm"
+                    >
+                      <span>Sign Up</span>
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    className="cursor-pointer"
+                    onClick={() => {
+                      navigate("/main/dashboard");
+                    }}
+                    asChild
+                    variant="outline"
+                    size="sm"
+                  >
+                    <span>Dashboard</span>
+                  </Button>
+                )}
                 <ModeToggle />
               </div>
             </div>
