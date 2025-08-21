@@ -64,13 +64,14 @@ export const Dashboard = () => {
         const response = res.data;
         if (response.success) {
           setTags(response.tags);
+          console.log(response.tags);
         }
       })
       .catch((err) => {
         console.log(err);
         toast.error(err.response.data.message);
       });
-  }, []);
+  }, [tags]);
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
@@ -227,7 +228,7 @@ export const Dashboard = () => {
                       <TagGroup label="Select Tags" selectionMode="multiple">
                         <TagList items={tags}>
                           {/* @ts-expect-error Present */}
-                          {(item) => <Tag>{item.title}</Tag>}
+                          {(item) => <Tag key={item._id}>{item.title}</Tag>}
                         </TagList>
                       </TagGroup>
                     </div>
