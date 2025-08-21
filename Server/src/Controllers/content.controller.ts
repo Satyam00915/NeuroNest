@@ -278,8 +278,13 @@ export const FetchTags = async (req: Request, res: Response) => {
     res.json({
       message: "Tags Fetched",
       tags,
+      success: true,
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      message: "Server error",
+      success: false,
+    });
   }
 };
