@@ -51,13 +51,14 @@ function App() {
           <Route path="/forgotPass" element={<ForgotPassword />} />
 
           <Route path="/changePassword" element={<ChangePassword />} />
-          <Route path="/main" element={<Layout />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="notes" element={<Notes />} />
-            <Route path="reminders" element={<Reminders />} />
-          </Route>
 
-          <Route element={<ProtectedRoute />}></Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/main" element={<Layout />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="notes" element={<Notes />} />
+              <Route path="reminders" element={<Reminders />} />
+            </Route>
+          </Route>
         </Routes>
       </ThemeProvider>
     </>
