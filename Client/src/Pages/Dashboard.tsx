@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/select";
 import { AudioUploadDemo, ImageUploadDemo } from "@/components/ui/ImageUpload";
 import { useEffect, useState } from "react";
-import { Tag, TagGroup, TagList } from "@/components/ui/tag-group";
+import { Tag, TagGroup } from "@/components/ui/tag-group";
 import api from "@/lib/api";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -64,7 +64,6 @@ export const Dashboard = () => {
         const response = res.data;
         if (response.success) {
           setTags(response.tags);
-          console.log(response.tags);
         }
       })
       .catch((err) => {
@@ -225,12 +224,11 @@ export const Dashboard = () => {
                     </div>
 
                     <div className="grid gap-2">
-                      <TagGroup label="Select Tags" selectionMode="multiple">
-                        <TagList items={tags}>
-                          {/* @ts-expect-error Present */}
-                          {(item) => <Tag key={item._id}>{item.title}</Tag>}
-                        </TagList>
-                      </TagGroup>
+                      <div className="flex">
+                        {tags.map((item) => (
+                          <Tag key={item._id}>{item.title}</Tag>
+                        ))}
+                      </div>
                     </div>
                   </CardContent>
                   <CardFooter className="p-4 md:p-6 pt-0">
