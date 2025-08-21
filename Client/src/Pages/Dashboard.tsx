@@ -32,11 +32,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AudioUploadDemo, ImageUploadDemo } from "@/components/ui/ImageUpload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Tag, TagGroup, TagList } from "@/components/ui/tag-group";
+import api from "@/lib/api";
+import toast, { Toaster } from "react-hot-toast";
 
 export const Dashboard = () => {
   const [fileType, setFileType] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [tags, setTags] = useState([]);
 
   const handleFileTypeChange = (value: string) => {
     setFileType(value);
@@ -48,53 +52,129 @@ export const Dashboard = () => {
     setFileType("");
   };
 
+  useEffect(() => {
+    api
+      .get("https://neuronest-oevp.onrender.com/api/content/tags", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        const response = res.data();
+        if (response.success) {
+          setTags(response.tags);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      });
+  }, [tags]);
+
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
-      <div className="flex-1 w-full p-4">Satya</div>
-      <div className="flex justify-end items-end pb-7 p-1">
+    <div className="flex flex-col min-h-screen overflow-hidden">
+      <Toaster />
+      {/* Main Content Area */}
+      <div className="flex-1 w-full p-4 md:p-6">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">
+            Dashboard
+          </h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {/* Placeholder content for dashboard */}
+            <div className="bg-card rounded-lg border p-4 md:p-6">
+              <h2 className="text-lg font-semibold mb-2">Welcome</h2>
+              <p className="text-muted-foreground">
+                Your content will appear here
+              </p>
+            </div>
+            <div className="bg-card rounded-lg border p-4 md:p-6">
+              <h2 className="text-lg font-semibold mb-2">Recent Activity</h2>
+              <p className="text-muted-foreground">No recent activity</p>
+            </div>
+            <div className="bg-card rounded-lg border p-4 md:p-6">
+              <h2 className="text-lg font-semibold mb-2">Statistics</h2>
+              <p className="text-muted-foreground">Data will be shown here</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating Action Button */}
+      <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Fab size="large" aria-label="add">
-              <AddIcon />
+            <Fab
+              size="medium"
+              aria-label="add"
+              className="!w-14 !h-14 md:!w-16 md:!h-16"
+            >
+              <AddIcon className="!w-6 !h-6 md:!w-8 md:!h-8" />
             </Fab>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogContent className="[&::-webkit-scrollbar]:hidden sm:max-w-lg max-h-[90vh] overflow-y-auto w-[95vw] max-w-[95vw] md:max-w-lg">
             <DialogHeader>
-              <DialogTitle>Add Resource</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className="text-lg md:text-xl">
+                Add Resource
+              </DialogTitle>
+              <DialogDescription className="text-sm md:text-base">
                 Select the type of file you want to add
               </DialogDescription>
             </DialogHeader>
 
             <Tabs defaultValue="file" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="file">File Upload</TabsTrigger>
-                <TabsTrigger value="url">URL</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 h-10 md:h-11">
+                <TabsTrigger value="file" className="text-xs md:text-sm">
+                  File Upload
+                </TabsTrigger>
+                <TabsTrigger value="url" className="text-xs md:text-sm">
+                  URL
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="file" className="mt-4">
                 <Card>
-                  <CardHeader>
-                    <CardTitle>File Upload</CardTitle>
-                    <CardDescription>
+                  <CardHeader className="p-4 md:p-6">
+                    <CardTitle className="text-lg md:text-xl">
+                      File Upload
+                    </CardTitle>
+                    <CardDescription className="text-sm md:text-base">
                       Select file type and upload your file
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="grid gap-4">
+                  <CardContent className="grid gap-4 p-4 md:p-6 pt-0">
                     <div className="grid gap-2">
-                      <Label htmlFor="file-type">Type of File</Label>
+                      <Label
+                        htmlFor="file-type"
+                        className="text-sm md:text-base"
+                      >
+                        Type of File
+                      </Label>
                       <Select
                         onValueChange={handleFileTypeChange}
                         value={fileType}
                       >
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className="w-full h-10 md:h-11 text-sm md:text-base">
                           <SelectValue placeholder="Select file type" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectLabel>File Type</SelectLabel>
-                            <SelectItem value="image">Image</SelectItem>
-                            <SelectItem value="audio">Audio</SelectItem>
+                            <SelectLabel className="text-sm md:text-base">
+                              File Type
+                            </SelectLabel>
+                            <SelectItem
+                              value="image"
+                              className="text-sm md:text-base"
+                            >
+                              Image
+                            </SelectItem>
+                            <SelectItem
+                              value="audio"
+                              className="text-sm md:text-base"
+                            >
+                              Audio
+                            </SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -104,11 +184,11 @@ export const Dashboard = () => {
                     {fileType && (
                       <div className="transition-all duration-300 ease-in-out">
                         {fileType === "image" ? (
-                          <div className="max-h-80 overflow-y-auto">
+                          <div className="max-h-60 md:max-h-80 overflow-y-auto">
                             <ImageUploadDemo />
                           </div>
                         ) : (
-                          <div className="max-h-80 overflow-y-auto">
+                          <div className="max-h-60 md:max-h-80 overflow-y-auto">
                             <AudioUploadDemo />
                           </div>
                         )}
@@ -116,88 +196,147 @@ export const Dashboard = () => {
                     )}
 
                     <div className="grid gap-2">
-                      <Label htmlFor="file-name">File Name</Label>
+                      <Label
+                        htmlFor="file-name"
+                        className="text-sm md:text-base"
+                      >
+                        File Name
+                      </Label>
                       <Input
                         id="file-name"
                         placeholder="Enter a name for your file"
+                        className="h-10 md:h-11 text-sm md:text-base"
                       />
                     </div>
 
                     <div className="grid gap-2">
-                      <Label htmlFor="file-description">
+                      <Label
+                        htmlFor="file-description"
+                        className="text-sm md:text-base"
+                      >
                         Description (Optional)
                       </Label>
                       <Input
                         id="file-description"
                         placeholder="Add a description"
+                        className="h-10 md:h-11 text-sm md:text-base"
                       />
                     </div>
+
+                    <div className="grid gap-2">
+                      <TagGroup label="Select Tags" selectionMode="multiple">
+                        <TagList items={tags}>
+                          {/* @ts-expect-error Present */}
+                          {(item) => <Tag>{item.title}</Tag>}
+                        </TagList>
+                      </TagGroup>
+                    </div>
                   </CardContent>
-                  <CardFooter>
-                    <Button className="w-full">Upload File</Button>
+                  <CardFooter className="p-4 md:p-6 pt-0">
+                    <Button className="w-full h-10 md:h-11 text-sm md:text-base">
+                      Upload File
+                    </Button>
                   </CardFooter>
                 </Card>
               </TabsContent>
 
               <TabsContent value="url" className="mt-4">
                 <Card>
-                  <CardHeader>
-                    <CardTitle>Add from URL</CardTitle>
-                    <CardDescription>
+                  <CardHeader className="p-4 md:p-6">
+                    <CardTitle className="text-lg md:text-xl">
+                      Add from URL
+                    </CardTitle>
+                    <CardDescription className="text-sm md:text-base">
                       Enter a URL to add content from the web
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="grid gap-4">
+                  <CardContent className="grid gap-4 p-4 md:p-6 pt-0">
                     <div className="grid gap-2">
-                      <Label htmlFor="url">URL</Label>
+                      <Label htmlFor="url" className="text-sm md:text-base">
+                        URL
+                      </Label>
                       <Input
                         id="url"
                         placeholder="https://example.com"
                         type="url"
+                        className="h-10 md:h-11 text-sm md:text-base"
                       />
                     </div>
 
                     <div className="grid gap-2">
-                      <Label htmlFor="url-type">Content Type</Label>
+                      <Label
+                        htmlFor="url-type"
+                        className="text-sm md:text-base"
+                      >
+                        Content Type
+                      </Label>
                       <Select>
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className="w-full h-10 md:h-11 text-sm md:text-base">
                           <SelectValue placeholder="Select content type" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="image">Image</SelectItem>
-                          <SelectItem value="audio">Audio</SelectItem>
-                          <SelectItem value="video">Video</SelectItem>
-                          <SelectItem value="document">Article</SelectItem>
+                          <SelectItem
+                            value="image"
+                            className="text-sm md:text-base"
+                          >
+                            Image
+                          </SelectItem>
+                          <SelectItem
+                            value="audio"
+                            className="text-sm md:text-base"
+                          >
+                            Audio
+                          </SelectItem>
+                          <SelectItem
+                            value="video"
+                            className="text-sm md:text-base"
+                          >
+                            Video
+                          </SelectItem>
+                          <SelectItem
+                            value="document"
+                            className="text-sm md:text-base"
+                          >
+                            Article
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div className="grid gap-2">
-                      <Label htmlFor="url-name">Name</Label>
+                      <Label
+                        htmlFor="url-name"
+                        className="text-sm md:text-base"
+                      >
+                        Name
+                      </Label>
                       <Input
                         id="url-name"
                         placeholder="Enter a name for this resource"
+                        className="h-10 md:h-11 text-sm md:text-base"
                       />
                     </div>
                   </CardContent>
-                  <CardFooter>
-                    <Button className="w-full">Add from URL</Button>
+                  <CardFooter className="p-4 md:p-6 pt-0">
+                    <Button className="w-full h-10 md:h-11 text-sm md:text-base">
+                      Add from URL
+                    </Button>
                   </CardFooter>
                 </Card>
               </TabsContent>
             </Tabs>
 
-            <DialogFooter className="sm:justify-end gap-2 mt-4">
+            <DialogFooter className="sm:justify-end gap-2 mt-4 flex flex-col sm:flex-row">
               <DialogClose asChild>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={handleCloseDialog}
+                  className="w-full sm:w-auto h-10 md:h-11 text-sm md:text-base"
                 >
-                  Cancel
+                  Close
                 </Button>
               </DialogClose>
-              <Button type="submit">Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
