@@ -53,24 +53,26 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
-    api
-      .get("https://neuronest-oevp.onrender.com/api/content/tags", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const response = res.data;
-        if (response.success) {
-          setTags(response.tags);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data.message);
-      });
-  }, [tags]);
+    if (isDialogOpen) {
+      api
+        .get("https://neuronest-oevp.onrender.com/api/content/tags", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        })
+        .then((res) => {
+          const response = res.data;
+          if (response.success) {
+            setTags(response.tags);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err.response.data.message);
+        });
+    }
+  }, [isDialogOpen]);
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
