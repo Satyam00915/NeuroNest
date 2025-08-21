@@ -36,10 +36,15 @@ import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import toast, { Toaster } from "react-hot-toast";
 
+interface Tag {
+  _id: string;
+  title: string;
+}
+
 export const Dashboard = () => {
   const [fileType, setFileType] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const toggleTag = (tag: string) => {
@@ -235,16 +240,16 @@ export const Dashboard = () => {
                       <div className="flex gap-2 flex-wrap">
                         {tags.map((tag) => (
                           <div
-                            key={tag}
-                            onClick={() => toggleTag(tag)}
+                            key={tag._id}
+                            onClick={() => toggleTag(tag.title)}
                             className={`px-3 py-1 rounded-full cursor-pointer border transition
                               ${
-                                selectedTags.includes(tag)
+                                selectedTags.includes(tag.title)
                                   ? "bg-purple-600 text-white"
                                   : "bg-gray-200 text-gray-700"
                               }`}
                           >
-                            {tag}
+                            {tag.title}
                           </div>
                         ))}
                       </div>
