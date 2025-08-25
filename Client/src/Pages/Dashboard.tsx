@@ -44,8 +44,10 @@ interface Tag {
 export const Dashboard = () => {
   const [fileType, setFileType] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isTagOpen, setIsTagOpen] = useState(false);
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [newTag, setNewTag] = useState("");
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev: string[]) =>
@@ -59,9 +61,19 @@ export const Dashboard = () => {
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
-    // Reset file type when dialog closes
     setFileType("");
   };
+
+  function AddTag() {
+    setTags((prev) => [
+      ...prev,
+      {
+        _id: "",
+        title: newTag,
+      },
+    ]);
+    setIsTagOpen(false);
+  }
 
   useEffect(() => {
     if (isDialogOpen) {
@@ -239,23 +251,52 @@ export const Dashboard = () => {
                     <div className="grid gap-2">
                       <div>Tags</div>
                       <div className="flex gap-2 flex-wrap">
-                        <button className="group cursor-pointer outline-none hover:rotate-90 duration-300">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="30px"
-                            height="30px"
-                            viewBox="0 0 24 24"
-                            className="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300 cursor-pointer" // Added cursor-pointer here
-                            style={{ cursor: "pointer" }} // Double assurance
-                          >
-                            <path
-                              d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                              strokeWidth="1.5"
-                            />
-                            <path d="M8 12H16" strokeWidth="1.5" />
-                            <path d="M12 16V8" strokeWidth="1.5" />
-                          </svg>
-                        </button>
+                        <Dialog open={isTagOpen} onOpenChange={setIsTagOpen}>
+                          <DialogTrigger asChild>
+                            <button
+                              title="Add New"
+                              className="group cursor-pointer outline-none hover:rotate-90 duration-300"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="30px"
+                                height="30px"
+                                viewBox="0 0 24 24"
+                                className="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
+                              >
+                                <path
+                                  d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                                  strokeWidth="1.5"
+                                />
+                                <path d="M8 12H16" strokeWidth="1.5" />
+                                <path d="M12 16V8" strokeWidth="1.5" />
+                              </svg>
+                            </button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>Create a new Tag</DialogTitle>
+                            </DialogHeader>
+                            <div className="grid gap-4">
+                              <div className="grid gap-3">
+                                <Label htmlFor="name-1">Tag Name</Label>
+                                <Input
+                                  id="name-1"
+                                  name="name"
+                                  onChange={(e) => {
+                                    setNewTag(e.currentTarget.value);
+                                  }}
+                                />
+                                <Button
+                                  onClick={AddTag}
+                                  className="cursor-pointer"
+                                >
+                                  Add Tag
+                                </Button>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
 
                         {tags.map((tag) => (
                           <div
@@ -361,25 +402,52 @@ export const Dashboard = () => {
                     <div className="grid gap-2">
                       <div>Tags</div>
                       <div className="flex gap-2 flex-wrap">
-                        <button
-                          title="Add New"
-                          className="group cursor-pointer outline-none hover:rotate-90 duration-300"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="30px"
-                            height="30px"
-                            viewBox="0 0 24 24"
-                            className="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
-                          >
-                            <path
-                              d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                              strokeWidth="1.5"
-                            />
-                            <path d="M8 12H16" strokeWidth="1.5" />
-                            <path d="M12 16V8" strokeWidth="1.5" />
-                          </svg>
-                        </button>
+                        <Dialog open={isTagOpen} onOpenChange={setIsTagOpen}>
+                          <DialogTrigger asChild>
+                            <button
+                              title="Add New"
+                              className="group cursor-pointer outline-none hover:rotate-90 duration-300"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="30px"
+                                height="30px"
+                                viewBox="0 0 24 24"
+                                className="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
+                              >
+                                <path
+                                  d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                                  strokeWidth="1.5"
+                                />
+                                <path d="M8 12H16" strokeWidth="1.5" />
+                                <path d="M12 16V8" strokeWidth="1.5" />
+                              </svg>
+                            </button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>Create a new Tag</DialogTitle>
+                            </DialogHeader>
+                            <div className="grid gap-4">
+                              <div className="grid gap-3">
+                                <Label htmlFor="name-1">Tag Name</Label>
+                                <Input
+                                  id="name-1"
+                                  name="name"
+                                  onChange={(e) => {
+                                    setNewTag(e.currentTarget.value);
+                                  }}
+                                />
+                                <Button
+                                  onClick={AddTag}
+                                  className="cursor-pointer"
+                                >
+                                  Add Tag
+                                </Button>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
 
                         {tags.map((tag) => (
                           <div
