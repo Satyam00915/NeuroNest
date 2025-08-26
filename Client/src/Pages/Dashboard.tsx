@@ -96,27 +96,24 @@ export const Dashboard = () => {
     }
   }, [isDialogOpen]);
 
-  function AddResource() {
+  async function AddResource() {
     if (Resource.type === "article" && Resource.url) {
-      axios
-        .post(
-          "https://neuronest-oevp.onrender.com/preview",
-          {
-            q: Resource.url,
+      const response = await axios.post(
+        "https://neuronest-oevp.onrender.com/preview",
+        {
+          q: Resource.url,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            withCredentials: true,
-          }
-        )
-        .then((res) => {
-          const response = res.data;
-          console.log(response);
-          updateResource({ thumbnailImg: response.image });
-        });
-      api.post(
+          withCredentials: true,
+        }
+      );
+
+      updateResource({ thumbnailImg: response.data.image });
+
+      const articleResp = await api.post(
         "https://neuronest-oevp.onrender.com/api/content/article",
         {
           title: Resource.title,
@@ -132,6 +129,7 @@ export const Dashboard = () => {
           withCredentials: true,
         }
       );
+      console.log(articleResp);
     }
   }
 
