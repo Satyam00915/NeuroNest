@@ -35,8 +35,9 @@ import { AudioUploadDemo, ImageUploadDemo } from "@/components/ui/ImageUpload";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import toast, { Toaster } from "react-hot-toast";
+import { useResourceStore } from "@/store/resourceStore";
 
-interface Tag {
+export interface Tag {
   _id: string;
   title: string;
 }
@@ -46,22 +47,19 @@ export const Dashboard = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isTagOpen, setIsTagOpen] = useState(false);
   const [tags, setTags] = useState<Tag[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
 
-  const toggleTag = (tag: string) => {
-    setSelectedTags((prev: string[]) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
-  };
+  const { Resource, updateResource, reset } = useResourceStore();
 
   const handleFileTypeChange = (value: string) => {
     setFileType(value);
+    updateResource({ type: value });
   };
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setFileType("");
+    reset();
   };
 
   function AddTag() {
@@ -96,6 +94,10 @@ export const Dashboard = () => {
         });
     }
   }, [isDialogOpen]);
+
+  function AddResource() {
+    console.log(Resource);
+  }
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
@@ -228,22 +230,11 @@ export const Dashboard = () => {
                         File Name
                       </Label>
                       <Input
+                        onChange={(e) => {
+                          updateResource({ title: e.currentTarget.value });
+                        }}
                         id="file-name"
                         placeholder="Enter a name for your file"
-                        className="h-10 md:h-11 text-sm md:text-base"
-                      />
-                    </div>
-
-                    <div className="grid gap-2">
-                      <Label
-                        htmlFor="file-description"
-                        className="text-sm md:text-base"
-                      >
-                        Description (Optional)
-                      </Label>
-                      <Input
-                        id="file-description"
-                        placeholder="Add a description"
                         className="h-10 md:h-11 text-sm md:text-base"
                       />
                     </div>
@@ -299,24 +290,31 @@ export const Dashboard = () => {
                         </Dialog>
 
                         {tags.map((tag) => (
-                          <div
+                          <button
                             key={tag._id}
-                            onClick={() => toggleTag(tag.title)}
+                            onClick={() =>
+                              updateResource({
+                                tags: [tag._id ? tag._id : tag.title],
+                              })
+                            }
                             className={`px-3 py-1 rounded-full cursor-pointer border transition
                               ${
-                                selectedTags.includes(tag.title)
+                                Resource.tags.includes(tag.title)
                                   ? "bg-purple-600 text-white"
                                   : "bg-gray-200 text-gray-700"
                               }`}
                           >
                             {tag.title}
-                          </div>
+                          </button>
                         ))}
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter className="p-4 md:p-6 pt-0">
-                    <Button className="w-full h-10 md:h-11 text-sm md:text-base">
+                    <Button
+                      onClick={AddResource}
+                      className="w-full h-10 md:h-11 text-sm md:text-base"
+                    >
                       Upload File
                     </Button>
                   </CardFooter>
@@ -339,6 +337,9 @@ export const Dashboard = () => {
                         URL
                       </Label>
                       <Input
+                        onChange={(e) => {
+                          updateResource({ url: e.currentTarget.value });
+                        }}
                         id="url"
                         placeholder="https://example.com"
                         type="url"
@@ -353,7 +354,10 @@ export const Dashboard = () => {
                       >
                         Content Type
                       </Label>
-                      <Select>
+                      <Select
+                        onValueChange={handleFileTypeChange}
+                        value={fileType}
+                      >
                         <SelectTrigger className="w-full h-10 md:h-11 text-sm md:text-base">
                           <SelectValue placeholder="Select content type" />
                         </SelectTrigger>
@@ -377,7 +381,7 @@ export const Dashboard = () => {
                             Video
                           </SelectItem>
                           <SelectItem
-                            value="document"
+                            value="article"
                             className="text-sm md:text-base"
                           >
                             Article
@@ -391,9 +395,12 @@ export const Dashboard = () => {
                         htmlFor="url-name"
                         className="text-sm md:text-base"
                       >
-                        Name
+                        Title
                       </Label>
                       <Input
+                        onChange={(e) => {
+                          updateResource({ title: e.currentTarget.value });
+                        }}
                         id="url-name"
                         placeholder="Enter a name for this resource"
                         className="h-10 md:h-11 text-sm md:text-base"
@@ -450,24 +457,31 @@ export const Dashboard = () => {
                         </Dialog>
 
                         {tags.map((tag) => (
-                          <div
+                          <button
                             key={tag._id}
-                            onClick={() => toggleTag(tag.title)}
+                            onClick={() => {
+                              updateResource({
+                                tags: [tag._id ? tag._id : tag.title],
+                              });
+                            }}
                             className={`px-3 py-1 rounded-full cursor-pointer border transition
                               ${
-                                selectedTags.includes(tag.title)
+                                Resource.tags.includes(tag.title)
                                   ? "bg-purple-600 text-white"
                                   : "bg-gray-200 text-gray-700"
                               }`}
                           >
                             {tag.title}
-                          </div>
+                          </button>
                         ))}
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter className="p-4 md:p-6 pt-0">
-                    <Button className="w-full h-10 md:h-11 text-sm md:text-base">
+                    <Button
+                      onClick={AddResource}
+                      className="w-full h-10 md:h-11 text-sm md:text-base"
+                    >
                       Add from URL
                     </Button>
                   </CardFooter>
