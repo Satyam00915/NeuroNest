@@ -466,7 +466,9 @@ export const Dashboard = () => {
                             }}
                             className={`px-3 py-1 rounded-full cursor-pointer border transition
                               ${
-                                Resource.tags.includes(tag.title)
+                                Resource.tags.includes(
+                                  tag._id ? tag._id : tag.title
+                                )
                                   ? "bg-purple-600 text-white"
                                   : "bg-gray-200 text-gray-700"
                               }`}
