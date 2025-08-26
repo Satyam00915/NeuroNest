@@ -111,8 +111,6 @@ export const Dashboard = () => {
         }
       );
 
-      updateResource({ thumbnailImg: response.data.image });
-
       const articleResp = await api.post(
         "https://neuronest-oevp.onrender.com/api/content/article",
         {
@@ -120,7 +118,7 @@ export const Dashboard = () => {
           type: Resource.type,
           tags: Resource.tags,
           externalUrl: Resource.url,
-          thumbnailImg: Resource.thumbnailImg,
+          thumbnailImg: response.data.image,
         },
         {
           headers: {
