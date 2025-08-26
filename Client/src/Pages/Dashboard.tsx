@@ -36,6 +36,7 @@ import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import toast, { Toaster } from "react-hot-toast";
 import { useResourceStore } from "@/store/resourceStore";
+import axios from "axios";
 
 export interface Tag {
   _id: string;
@@ -96,7 +97,43 @@ export const Dashboard = () => {
   }, [isDialogOpen]);
 
   function AddResource() {
-    console.log(Resource);
+    if (Resource.type === "article" && Resource.url) {
+      axios
+        .post(
+          "https://neuronest-oevp.onrender.com/api/preview",
+          {
+            q: Resource.url,
+          },
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "X-Linkpreview-Api-Key": import.meta.env.VITE_API_KEY,
+            },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          const response = res.data;
+          console.log(response);
+          updateResource({ thumbnailImg: response.image });
+        });
+      api.post(
+        "https://neuronest-oevp.onrender.com/api/content/article",
+        {
+          title: Resource.title,
+          type: Resource.type,
+          tags: Resource.tags,
+          externalUrl: Resource.url,
+          thumbnailImg: Resource.thumbnailImg,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+    }
   }
 
   return (
