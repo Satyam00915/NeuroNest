@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { ImagePlus, X, Upload, Trash2, Music } from "lucide-react";
 import { useCallback, useState, useRef, type ChangeEvent } from "react";
 import { cn } from "@/lib/utils";
+import { useResourceStore } from "@/store/resourceStore";
 
 interface ImageUploadProps {
   title: string;
@@ -21,6 +22,8 @@ const useImageUpload = ({ onUpload }: UseImageUploadProps) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const { updateResource } = useResourceStore();
+
   const handleThumbnailClick = () => {
     fileInputRef.current?.click();
   };
@@ -30,6 +33,7 @@ const useImageUpload = ({ onUpload }: UseImageUploadProps) => {
     if (!file) return;
 
     setFileName(file.name);
+    updateResource({ file: file });
 
     // Create preview URL
     const objectUrl = URL.createObjectURL(file);
