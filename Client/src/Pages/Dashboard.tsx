@@ -100,7 +100,7 @@ export const Dashboard = () => {
     if (Resource.type === "article" && Resource.url) {
       axios
         .post(
-          "https://neuronest-oevp.onrender.com/api/preview",
+          "https://neuronest-oevp.onrender.com/preview",
           {
             q: Resource.url,
           },
