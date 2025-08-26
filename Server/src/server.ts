@@ -5,6 +5,7 @@ import userRouter from "./Routes/user.route";
 import cookieParser from "cookie-parser";
 import contentRouter from "./Routes/content.route";
 import cors from "cors";
+import axios from "axios";
 
 dotenv.config();
 
@@ -22,6 +23,28 @@ app.use(
 
 app.use("/api/user", userRouter);
 app.use("/api/content", contentRouter);
+
+app.post("/preview", async (req, res) => {
+  try {
+    const response = await axios.post(
+      "https://api.linkpreview.net/",
+      new URLSearchParams({
+        q: req.body.q,
+      }),
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-Linkpreview-Api-Key": process.env.LINK_API_KEY,
+        },
+      }
+    );
+    res.json(response.data);
+  } catch (err) {
+    //@ts-ignore
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on Port ${PORT}`);
