@@ -106,8 +106,7 @@ export const Dashboard = () => {
           },
           {
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              "X-Linkpreview-Api-Key": import.meta.env.VITE_API_KEY,
+              "Content-Type": "application/json",
             },
             withCredentials: true,
           }
