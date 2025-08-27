@@ -128,6 +128,23 @@ export const Dashboard = () => {
         }
       );
       console.log(articleResp);
+    } else if (Resource.type === "image") {
+      const imageResp = await api.post(
+        "https://neuronest-oevp.onrender.com/api/content/image",
+        {
+          title: Resource.title,
+          type: Resource.type,
+          tags: Resource.tags,
+          externalUrl: Resource.url,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(imageResp);
     }
   }
 
