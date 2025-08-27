@@ -174,6 +174,7 @@ export const AddImage = async (req: AuthenticatedRequest, res: Response) => {
     const content = await Content.create({
       file: fileData,
       title,
+      thumbnailImg: externalUrl,
       type,
       tags: newTags,
       userId: user._id,
