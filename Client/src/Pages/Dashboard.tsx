@@ -127,7 +127,6 @@ export const Dashboard = () => {
           withCredentials: true,
         }
       );
-      console.log(articleResp);
     } else if (Resource.type === "image") {
       const imageResp = await api.post(
         "https://neuronest-oevp.onrender.com/api/content/image",
@@ -144,7 +143,6 @@ export const Dashboard = () => {
           withCredentials: true,
         }
       );
-      console.log(imageResp);
     }
   }
 
