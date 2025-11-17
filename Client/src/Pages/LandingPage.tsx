@@ -1,4 +1,4 @@
-import About from "@/components/About";
+// import About from "@/components/About";
 import Faq from "@/components/Faq";
 import Features from "@/components/Features";
 import { HeroSection } from "@/components/hero-section";
@@ -9,7 +9,7 @@ const LandingPage = () => {
       <HeroSection />
       <Features />
       <Faq />
-      <About />
+      {/* <About /> */}
     </div>
   );
 };
